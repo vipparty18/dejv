@@ -109,6 +109,12 @@
     button.submit:hover {
       background-color: #00caa1;
     }
+
+    #countdown {
+      font-size: 1.5em;
+      color: #ff0000;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
@@ -134,14 +140,12 @@
     </div>
     <input type="text" id="answerInput">
     <button class="submit" onclick="submitAnswer()">Odoslať</button>
+
+    <div id="countdown" class="hidden"></div>
   </div>
 
   <div id="blockedMessage" class="hidden" style="color: #ff0000; font-size: 1.5em; text-align: center; margin-top: 50px;">
     ⚠️ Stránka bola zablokovaná! Máš viac ako 3 nesprávne odpovede.
-  </div>
-
-  <div id="countdown" class="hidden">
-    <p id="countdownTimer">⏳ Čakaj na ďalší quest...</p>
   </div>
 
   <script>
@@ -160,14 +164,19 @@
 
     let attempts = 2;
     let wrongAnswers = localStorage.getItem('wrongAnswers') ? parseInt(localStorage.getItem('wrongAnswers')) : 0;
-    let currentQuestion = localStorage.getItem('currentQuestion') ? parseInt(localStorage.getItem('currentQuestion')) : 0; 
-    let letters = localStorage.getItem('letters') || ""; 
+    let currentQuestion = localStorage.getItem('currentQuestion') ? parseInt(localStorage.getItem('currentQuestion')) : 0;
+    let letters = localStorage.getItem('letters') || "";
+    let nextQuestUnlockTime = localStorage.getItem('nextQuestUnlockTime') ? parseInt(localStorage.getItem('nextQuestUnlockTime')) : 0;
 
     if (wrongAnswers >= 3) {
       document.getElementById("blockedMessage").classList.remove("hidden");
       document.getElementById("questSection").classList.add("hidden");
       document.getElementById("warning").style.display = "none";
       document.getElementById("attemptsLeft").style.display = "none";
+    } else if (nextQuestUnlockTime > Date.now()) {
+      document.getElementById("countdown").classList.remove("hidden");
+      startCountdown();
+      document.getElementById("questSection").classList.add("hidden");
     } else {
       document.getElementById("question").innerHTML = questions[currentQuestion].text;
       document.getElementById("letters").textContent = letters;
@@ -193,6 +202,14 @@
         localStorage.setItem('wrongAnswers', wrongAnswers);
         localStorage.setItem('currentQuestion', currentQuestion);
         localStorage.setItem('letters', letters);
+
+        // Save the time for the next quest unlock
+        nextQuestUnlockTime = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
+        localStorage.setItem('nextQuestUnlockTime', nextQuestUnlockTime);
+
+        // Start countdown if needed
+        document.getElementById("countdown").classList.remove("hidden");
+        startCountdown();
 
         if (currentQuestion < questions.length) {
           document.getElementById("question").innerHTML = questions[currentQuestion].text;
@@ -223,6 +240,23 @@
           alert("❌ Nesprávna odpovedť, máš ešte " + attempts + " pokus(y).");
         }
       }
+    }
+
+    function startCountdown() {
+      const countdownElement = document.getElementById("countdown");
+      const countdownInterval = setInterval(() => {
+        const timeLeft = nextQuestUnlockTime - Date.now();
+        if (timeLeft <= 0) {
+          clearInterval(countdownInterval);
+          countdownElement.innerHTML = "⏳ Čakaj na ďalší quest... (Ready to continue!)";
+          document.getElementById("questSection").classList.remove("hidden");
+        } else {
+          const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+          const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+          countdownElement.innerHTML = `⏳ Čakaj na ďalší quest... ${hours}:${minutes}:${seconds}`;
+        }
+      }, 1000);
     }
   </script>
 
