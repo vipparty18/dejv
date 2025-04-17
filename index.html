@@ -68,15 +68,6 @@
       background-color: #00caa1;
     }
 
-    .letter-display {
-      position: fixed;
-      top: 20px;
-      right: 30px;
-      font-size: 2.5em;
-      color: #00ffc3;
-      font-weight: bold;
-    }
-
     .question {
       font-size: 1.8em;
       color: #ffcc00;
@@ -110,21 +101,19 @@
       background-color: #00caa1;
     }
 
-    #countdown {
+    #message {
       font-size: 1.5em;
       color: #ff0000;
       margin-top: 20px;
-      visibility: hidden;
     }
 
-    #countdown.visible {
-      visibility: visible;
+    iframe {
+      display: none;
+      margin-top: 30px;
     }
   </style>
 </head>
 <body>
-
-  <div class="letter-display" id="letters"></div>
 
   <div class="intro" id="intro">
     <div class="title">Good job! Vitaj, bratku.</div>
@@ -136,21 +125,26 @@
   </div>
 
   <div class="quest-section hidden" id="questSection">
-    <div class="question" id="question">Quest n. 1:<br>O akom čase chodil Muhammad Ali pravidelne trénovať do fitka?</div>
-    <div id="warning" style="color:#ff4d4d; margin-bottom:15px; font-size: 0.95em;">
-      Máš len 2 pokusy. Všetky tvoje odpovede sa zaznamenávajú.
-    </div>
-    <div id="attemptsLeft" style="color: #cccccc; margin-bottom: 20px;">
-      Zostávajúce pokusy: <span id="tries">2</span>
-    </div>
-    <input type="text" id="answerInput">
+    <div class="question" id="question"></div>
+    <input type="text" id="answerInput" placeholder="Tvoja odpoveď...">
     <button class="submit" onclick="submitAnswer()">Odoslať</button>
 
-    <div id="countdown" class="hidden"></div>
-  </div>
+    <div id="message" class="hidden"></div>
 
-  <div id="blockedMessage" class="hidden" style="color: #ff0000; font-size: 1.5em; text-align: center; margin-top: 50px;">
-    ⚠️ Stránka bola zablokovaná! Máš viac ako 3 nesprávne odpovede.
+    <!-- JotForm Iframe -->
+    <iframe
+      id="JotFormIFrame-251066510270042"
+      title="Form"
+      onload="window.parent.scrollTo(0,0)"
+      allowtransparency="true"
+      allow="geolocation; microphone; camera; fullscreen"
+      src="https://form.jotform.com/251066510270042"
+      frameborder="0"
+      style="min-width:100%;max-width:100%;height:539px;border:none;"
+      scrolling="no">
+    </iframe>
+    <script src='https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js'></script>
+    <script>window.jotformEmbedHandler("iframe[id='JotFormIFrame-251066510270042']", "https://form.jotform.com/")</script>
   </div>
 
   <script>
@@ -158,103 +152,58 @@
       {
         text: "Quest n. 1:<br>O akom čase chodil Muhammad Ali pravidelne trénovať do fitka?",
         answer: "12:00",
-        letter: "E"
       },
       {
         text: "Quest n. 2:<br>Koľko zarába Milan Urbaník?",
         answer: "999999",
-        letter: "I"
       }
     ];
 
+    let currentQuestion = 0;
     let attempts = 2;
-    let wrongAnswers = localStorage.getItem('wrongAnswers') ? parseInt(localStorage.getItem('wrongAnswers')) : 0;
-    let currentQuestion = localStorage.getItem('currentQuestion') ? parseInt(localStorage.getItem('currentQuestion')) : 0;
-    let letters = localStorage.getItem('letters') || "";
-    let nextQuestUnlockTime = localStorage.getItem('nextQuestUnlockTime') ? parseInt(localStorage.getItem('nextQuestUnlockTime')) : 0;
+    let nextQuestUnlockTime = 0;
 
+    // Funkcia na spustenie hry (skryje úvodnú obrazovku a zobrazí sekciu s úlohami)
     function startGame() {
       document.getElementById("intro").classList.add("hidden");
-      if (Date.now() < nextQuestUnlockTime) {
-        document.getElementById("countdown").classList.remove("hidden");
-        document.getElementById("countdown").classList.add("visible");
-        startCountdown();
-      } else {
-        document.getElementById("questSection").classList.remove("hidden");
-        document.getElementById("question").innerHTML = questions[currentQuestion].text;
-        document.getElementById("letters").textContent = letters;
-        document.getElementById("tries").textContent = attempts;
-      }
+      document.getElementById("questSection").classList.remove("hidden");
+      loadQuestion();
     }
 
+    // Funkcia na načítanie otázky
+    function loadQuestion() {
+      const questionElement = document.getElementById("question");
+      questionElement.innerHTML = questions[currentQuestion].text;
+    }
+
+    // Funkcia na odoslanie odpovede
     function submitAnswer() {
       const userInput = document.getElementById("answerInput").value.trim();
       const correctAnswer = questions[currentQuestion].answer;
+      const messageElement = document.getElementById("message");
 
       if (userInput === correctAnswer) {
-        letters += questions[currentQuestion].letter;
-        document.getElementById("letters").textContent = letters;
-        currentQuestion++;
+        // Odpoveď je správna
+        messageElement.style.color = "#00ff00";
+        messageElement.innerHTML = "Gratulujeme! Ďalší quest sa ti odomkne za 24 hodín.";
+        nextQuestUnlockTime = Date.now() + 24 * 60 * 60 * 1000; // 24 hodín
+        setTimeout(() => {
+          alert("Ďalší quest sa ti odomkne o 24 hodín.");
+        }, 100);
+        // Odošleme odpoveď na mail pomocou JotForm formulára (formulár sa odošle na mail)
         attempts = 2;
-        wrongAnswers = 0;
-
-        localStorage.setItem('wrongAnswers', wrongAnswers);
-        localStorage.setItem('currentQuestion', currentQuestion);
-        localStorage.setItem('letters', letters);
-
-        nextQuestUnlockTime = Date.now() + 24 * 60 * 60 * 1000;
-        localStorage.setItem('nextQuestUnlockTime', nextQuestUnlockTime);
-
-        document.getElementById("questSection").classList.add("hidden");
-        document.getElementById("countdown").classList.remove("hidden");
-        document.getElementById("countdown").classList.add("visible");
-        startCountdown();
+        document.getElementById("JotFormIFrame-251066510270042").style.display = "block";
       } else {
+        // Odpoveď je nesprávna
         attempts--;
-        wrongAnswers++;
-        localStorage.setItem('wrongAnswers', wrongAnswers);
-        document.getElementById("tries").textContent = attempts;
-
-        if (wrongAnswers >= 3) {
-          document.getElementById("blockedMessage").classList.remove("hidden");
-          document.getElementById("questSection").classList.add("hidden");
-          document.getElementById("warning").style.display = "none";
-          document.getElementById("attemptsLeft").style.display = "none";
-          alert("❌ Stránka je zablokovaná! Vyčerpal si viac ako 3 nesprávne odpovede.");
-          return;
-        }
-
+        messageElement.style.color = "#ff0000";
+        messageElement.innerHTML = `Nesprávna odpoveď. Zostávajúce pokusy: ${attempts}`;
+        // Ak už nie sú pokusy, odošleme formulár a informujeme používateľa
         if (attempts <= 0) {
-          alert("❌ Nesprávna odpovedť, máš ešte " + attempts + " pokus(y). Znova sa snaž.");
+          messageElement.innerHTML = "Vyčerpal si pokusy. Odpoveď bola odoslaná.";
+          document.getElementById("JotFormIFrame-251066510270042").style.display = "block";
         }
       }
-    }
-
-    function startCountdown() {
-      const countdownElement = document.getElementById("countdown");
-      countdownElement.classList.add("visible");
-      const countdownInterval = setInterval(() => {
-        const timeLeft = nextQuestUnlockTime - Date.now();
-        if (timeLeft <= 0) {
-          clearInterval(countdownInterval);
-          countdownElement.classList.remove("visible");
-          countdownElement.classList.add("hidden");
-          if (currentQuestion < questions.length) {
-            document.getElementById("questSection").classList.remove("hidden");
-            document.getElementById("question").innerHTML = questions[currentQuestion].text;
-            document.getElementById("tries").textContent = attempts;
-          } else {
-            document.getElementById("question").innerHTML = "🔥 Gratulujem, zvládol si všetky questy!";
-            document.getElementById("warning").style.display = "none";
-            document.getElementById("attemptsLeft").style.display = "none";
-          }
-        } else {
-          const hours = String(Math.floor(timeLeft / (1000 * 60 * 60))).padStart(2, "0");
-          const minutes = String(Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, "0");
-          const seconds = String(Math.floor((timeLeft % (1000 * 60)) / 1000)).padStart(2, "0");
-          countdownElement.innerHTML = `⏳ Čakaj na ďalší quest... ${hours}:${minutes}:${seconds}`;
-        }
-      }, 1000);
     }
   </script>
 
