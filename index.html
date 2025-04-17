@@ -160,7 +160,15 @@
     }
 
     let attempts = 2;
-let wrongAnswers = 0;  // Počíta počet nesprávnych odpovedí
+let wrongAnswers = localStorage.getItem('wrongAnswers') ? parseInt(localStorage.getItem('wrongAnswers')) : 0; // Načítaj počet z predchádzajúcej návštevy
+
+// Ak sú 3 nesprávne odpovede, okamžite zablokuj stránku
+if (wrongAnswers >= 3) {
+  document.getElementById("blockedMessage").classList.remove("hidden");
+  document.getElementById("questSection").classList.add("hidden");
+  document.getElementById("warning").style.display = "none";
+  document.getElementById("attemptsLeft").style.display = "none";
+}
 
 function submitAnswer() {
   const userInput = document.getElementById("answerInput").value.trim();
@@ -181,6 +189,9 @@ function submitAnswer() {
     attempts = 2;
     wrongAnswers = 0;  // Reset na správnu odpoveď
 
+    // Resetuj počet nesprávnych odpovedí v localStorage po správnej odpovedi
+    localStorage.setItem('wrongAnswers', wrongAnswers);
+
     if (currentQuestion < questions.length) {
       document.getElementById("question").innerHTML = questions[currentQuestion].text;
       document.getElementById("answerInput").value = "";
@@ -194,6 +205,7 @@ function submitAnswer() {
   } else {
     attempts--;
     wrongAnswers++;
+    localStorage.setItem('wrongAnswers', wrongAnswers);  // Ulož počet nesprávnych odpovedí
 
     document.getElementById("tries").textContent = attempts;
 
@@ -212,8 +224,6 @@ function submitAnswer() {
     }
   }
 }
-
-
   </script>
 <div id="blockedMessage" class="hidden" style="color: #ff0000; font-size: 1.5em; text-align: center; margin-top: 50px;">
   ⚠️ Stránka bola zablokovaná! Máš viac ako 3 nesprávne odpovede.
