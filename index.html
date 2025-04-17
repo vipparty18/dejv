@@ -168,25 +168,12 @@
     let letters = localStorage.getItem('letters') || "";
     let nextQuestUnlockTime = localStorage.getItem('nextQuestUnlockTime') ? parseInt(localStorage.getItem('nextQuestUnlockTime')) : 0;
 
-    if (wrongAnswers >= 3) {
-      document.getElementById("blockedMessage").classList.remove("hidden");
-      document.getElementById("questSection").classList.add("hidden");
-      document.getElementById("warning").style.display = "none";
-      document.getElementById("attemptsLeft").style.display = "none";
-    } else if (nextQuestUnlockTime > Date.now()) {
-      document.getElementById("countdown").classList.remove("hidden");
-      document.getElementById("questSection").classList.add("hidden");
-      startCountdown();
-    } else {
-      document.getElementById("question").innerHTML = questions[currentQuestion].text;
-      document.getElementById("letters").textContent = letters;
-      document.getElementById("tries").textContent = attempts;
-      document.getElementById("questSection").classList.remove("hidden");
-    }
-
     function startGame() {
       document.getElementById("intro").classList.add("hidden");
       document.getElementById("questSection").classList.remove("hidden");
+      document.getElementById("question").innerHTML = questions[currentQuestion].text;
+      document.getElementById("letters").textContent = letters;
+      document.getElementById("tries").textContent = attempts;
     }
 
     function submitAnswer() {
@@ -207,21 +194,9 @@
         nextQuestUnlockTime = Date.now() + 24 * 60 * 60 * 1000;
         localStorage.setItem('nextQuestUnlockTime', nextQuestUnlockTime);
 
-        document.getElementById("countdown").classList.add("hidden");
-        setTimeout(() => {
-          document.getElementById("countdown").classList.remove("hidden");
-          startCountdown();
-        }, 500);
-
-        if (currentQuestion < questions.length) {
-          document.getElementById("question").innerHTML = questions[currentQuestion].text;
-          document.getElementById("answerInput").value = "";
-          document.getElementById("tries").textContent = attempts;
-        } else {
-          document.getElementById("question").innerHTML = "🔥 Gratulujem, zvládol si všetky questy!";
-          document.getElementById("warning").style.display = "none";
-          document.getElementById("attemptsLeft").style.display = "none";
-        }
+        document.getElementById("questSection").classList.add("hidden");
+        document.getElementById("countdown").classList.remove("hidden");
+        startCountdown();
       } else {
         attempts--;
         wrongAnswers++;
@@ -250,9 +225,15 @@
         if (timeLeft <= 0) {
           clearInterval(countdownInterval);
           countdownElement.classList.add("hidden");
-          document.getElementById("questSection").classList.remove("hidden");
-          document.getElementById("question").innerHTML = questions[currentQuestion].text;
-          document.getElementById("tries").textContent = attempts;
+          if (currentQuestion < questions.length) {
+            document.getElementById("questSection").classList.remove("hidden");
+            document.getElementById("question").innerHTML = questions[currentQuestion].text;
+            document.getElementById("tries").textContent = attempts;
+          } else {
+            document.getElementById("question").innerHTML = "🔥 Gratulujem, zvládol si všetky questy!";
+            document.getElementById("warning").style.display = "none";
+            document.getElementById("attemptsLeft").style.display = "none";
+          }
         } else {
           const hours = String(Math.floor(timeLeft / (1000 * 60 * 60))).padStart(2, "0");
           const minutes = String(Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, "0");
