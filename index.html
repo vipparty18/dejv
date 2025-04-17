@@ -119,7 +119,6 @@
     <div class="title">Good job! Vitaj, bratku</div>
     <div class="description">
       Čaká ťa séria niekoľkých výziev, po ktorých splnení sa ti odomkne unikátna informácia s miestom, časom a detailmi tvojej VIP oslavy.<br><br>
-  
       Môže to byť čokoľvek, bratku. Ty sa len modli, aby si to vydržal.
     </div>
     <button class="play-btn" onclick="startGame()">PLAY</button>
@@ -128,59 +127,24 @@
   <div class="quest-section hidden" id="questSection">
     <div class="question" id="question">Quest n. 1:<br>O akom čase chodil Muhammad Ali pravidelne trénovať do fitka?</div>
     <div id="warning" style="color:#ff4d4d; margin-bottom:15px; font-size: 0.95em;">
-  Máš len 2 pokusy. Všetky tvoje odpovede sa zaznamenávajú.
-</div>
-<div id="attemptsLeft" style="color: #cccccc; margin-bottom: 20px;">
-  Zostávajúce pokusy: <span id="tries">2</span>
-</div>
+      Máš len 2 pokusy. Všetky tvoje odpovede sa zaznamenávajú.
+    </div>
+    <div id="attemptsLeft" style="color: #cccccc; margin-bottom: 20px;">
+      Zostávajúce pokusy: <span id="tries">2</span>
+    </div>
     <input type="text" id="answerInput">
     <button class="submit" onclick="submitAnswer()">Odoslať</button>
   </div>
 
+  <div id="blockedMessage" class="hidden" style="color: #ff0000; font-size: 1.5em; text-align: center; margin-top: 50px;">
+    ⚠️ Stránka bola zablokovaná! Máš viac ako 3 nesprávne odpovede.
+  </div>
+
+  <div id="countdown" class="hidden">
+    <p id="countdownTimer">⏳ Čakaj na ďalší quest...</p>
+  </div>
+
   <script>
-    async function checkCooldown() {
-  const response = await fetch('/checkCooldown');
-  const data = await response.json();
-  const now = Date.now();
-
-  if (data.unlockTime && data.unlockTime > now) {
-    const remaining = data.unlockTime - now;
-    startCountdown(remaining);
-    return true; // cooldown still active
-  }
-  return false; // cooldown over
-}
-
-async function startQuest() {
-  const isCooldown = await checkCooldown();
-  if (isCooldown) {
-    document.getElementById("questSection").style.display = "none";
-    document.getElementById("countdown").style.display = "block";
-  } else {
-    document.getElementById("questSection").style.display = "block";
-    document.getElementById("countdown").style.display = "none";
-  }
-}
-
-function startCountdown(msLeft) {
-  const countdownDiv = document.getElementById("countdownTimer");
-
-  const interval = setInterval(() => {
-    const hours = Math.floor(msLeft / (1000 * 60 * 60));
-    const minutes = Math.floor((msLeft % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((msLeft % (1000 * 60)) / 1000);
-
-    countdownDiv.textContent = `⏳ Ďalší quest sa odomkne o ${hours}h ${minutes}m ${seconds}s`;
-    msLeft -= 1000;
-
-    if (msLeft <= 0) {
-      clearInterval(interval);
-      location.reload();
-    }
-  }, 1000);
-}
-
-    
     const questions = [
       {
         text: "Quest n. 1:<br>O akom čase chodil Muhammad Ali pravidelne trénovať do fitka?",
@@ -194,116 +158,73 @@ function startCountdown(msLeft) {
       }
     ];
 
-    async function startGame() {
-  document.getElementById("intro").classList.add("hidden");
-
-  const cooldown = await checkCooldown();
-
-  if (!cooldown) {
-    document.getElementById("questSection").classList.remove("hidden");
-  }
-}
-
-
     let attempts = 2;
-let wrongAnswers = localStorage.getItem('wrongAnswers') ? parseInt(localStorage.getItem('wrongAnswers')) : 0;
-let currentQuestion = localStorage.getItem('currentQuestion') ? parseInt(localStorage.getItem('currentQuestion')) : 0; // Načítanie poslednej zodpovedanej otázky
-let letters = localStorage.getItem('letters') || ""; // Načítanie už získaných písmen
-
-// Ak sú 3 nesprávne odpovede, okamžite zablokuj stránku
-if (wrongAnswers >= 3) {
-  document.getElementById("blockedMessage").classList.remove("hidden");
-  document.getElementById("questSection").classList.add("hidden");
-  document.getElementById("warning").style.display = "none";
-  document.getElementById("attemptsLeft").style.display = "none";
-  document.getElementById("resetButton").classList.remove("hidden"); // Zobraziť tlačidlo na obnovu
-} else {
-  // Načítanie otázky na základe poslednej odpovedanej otázky
-  document.getElementById("question").innerHTML = questions[currentQuestion].text;
-  document.getElementById("letters").textContent = letters;
-  document.getElementById("tries").textContent = attempts;
-}
-
-function submitAnswer() {
-  const userInput = document.getElementById("answerInput").value.trim();
-  const correctAnswer = questions[currentQuestion].answer;
-  fetch('/saveCooldown', { method: 'POST' });
-
-
-  // Zaznamenávanie cez backend
-  fetch('/log', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({question: currentQuestion + 1, answer: userInput})
-  });
-
-  // Skontroluj odpoveď
-  if (userInput === correctAnswer) {
-    letters += questions[currentQuestion].letter;
-    document.getElementById("letters").textContent = letters;
-    currentQuestion++;
-    attempts = 2;
-    wrongAnswers = 0;  // Reset na správnu odpoveď
-
-    // Ulož aktuálnu otázku a získané písmená
-    localStorage.setItem('wrongAnswers', wrongAnswers);
-    localStorage.setItem('currentQuestion', currentQuestion);
-    localStorage.setItem('letters', letters);
-
-    if (currentQuestion < questions.length) {
-      document.getElementById("question").innerHTML = questions[currentQuestion].text;
-      document.getElementById("answerInput").value = "";
-      document.getElementById("tries").textContent = attempts;
-    } else {
-      document.getElementById("question").innerHTML = "🔥 Gratulujem, zvládol si všetky questy!";
-      document.getElementById("warning").style.display = "none";
-      document.getElementById("attemptsLeft").style.display = "none";
-    }
-
-  } else {
-    attempts--;
-    wrongAnswers++;
-    localStorage.setItem('wrongAnswers', wrongAnswers);  // Ulož počet nesprávnych odpovedí
-
-    document.getElementById("tries").textContent = attempts;
+    let wrongAnswers = localStorage.getItem('wrongAnswers') ? parseInt(localStorage.getItem('wrongAnswers')) : 0;
+    let currentQuestion = localStorage.getItem('currentQuestion') ? parseInt(localStorage.getItem('currentQuestion')) : 0; 
+    let letters = localStorage.getItem('letters') || ""; 
 
     if (wrongAnswers >= 3) {
-      // Po 3 zlých odpovediach zablokuj stránku
       document.getElementById("blockedMessage").classList.remove("hidden");
       document.getElementById("questSection").classList.add("hidden");
       document.getElementById("warning").style.display = "none";
       document.getElementById("attemptsLeft").style.display = "none";
-      document.getElementById("resetButton").classList.remove("hidden");
-      alert("❌ Stránka je zablokovaná! Vyčerpal si viac ako 3 nesprávne odpovede.");
-      return; // Po blokovaní už nič neudeláme
+    } else {
+      document.getElementById("question").innerHTML = questions[currentQuestion].text;
+      document.getElementById("letters").textContent = letters;
+      document.getElementById("tries").textContent = attempts;
     }
 
-    if (attempts <= 0) {
-      alert("❌ Nesprávna odpoveď, máš ešte " + attempts + " pokus(y).");
+    function startGame() {
+      document.getElementById("intro").classList.add("hidden");
+      document.getElementById("questSection").classList.remove("hidden");
     }
-  }
-}
 
-function resetAttempts() {
-  // Vymaže údaje o nesprávnych odpovediach a stave otázok zo localStorage
-  localStorage.removeItem('wrongAnswers');
-  localStorage.removeItem('currentQuestion');
-  localStorage.removeItem('letters');
-  
-  // Obnoví stránku (reload)
-  location.reload();
-}
-window.onload = async () => {
-  await checkCooldown(); // Zistí, či má čakať
-}
+    function submitAnswer() {
+      const userInput = document.getElementById("answerInput").value.trim();
+      const correctAnswer = questions[currentQuestion].answer;
 
+      if (userInput === correctAnswer) {
+        letters += questions[currentQuestion].letter;
+        document.getElementById("letters").textContent = letters;
+        currentQuestion++;
+        attempts = 2;
+        wrongAnswers = 0;
+
+        localStorage.setItem('wrongAnswers', wrongAnswers);
+        localStorage.setItem('currentQuestion', currentQuestion);
+        localStorage.setItem('letters', letters);
+
+        if (currentQuestion < questions.length) {
+          document.getElementById("question").innerHTML = questions[currentQuestion].text;
+          document.getElementById("answerInput").value = "";
+          document.getElementById("tries").textContent = attempts;
+        } else {
+          document.getElementById("question").innerHTML = "🔥 Gratulujem, zvládol si všetky questy!";
+          document.getElementById("warning").style.display = "none";
+          document.getElementById("attemptsLeft").style.display = "none";
+        }
+
+      } else {
+        attempts--;
+        wrongAnswers++;
+        localStorage.setItem('wrongAnswers', wrongAnswers);
+        document.getElementById("tries").textContent = attempts;
+
+        if (wrongAnswers >= 3) {
+          document.getElementById("blockedMessage").classList.remove("hidden");
+          document.getElementById("questSection").classList.add("hidden");
+          document.getElementById("warning").style.display = "none";
+          document.getElementById("attemptsLeft").style.display = "none";
+          alert("❌ Stránka je zablokovaná! Vyčerpal si viac ako 3 nesprávne odpovede.");
+          return;
+        }
+
+        if (attempts <= 0) {
+          alert("❌ Nesprávna odpovedť, máš ešte " + attempts + " pokus(y).");
+        }
+      }
+    }
   </script>
-<div id="blockedMessage" class="hidden" style="color: #ff0000; font-size: 1.5em; text-align: center; margin-top: 50px;">
-  ⚠️ Stránka bola zablokovaná! Máš viac ako 3 nesprávne odpovede.
-</div>
-  <div id="countdown" class="hidden">
-  <p id="countdownTimer">⏳ Čakaj na ďalší quest...</p>
-</div>
 
 </body>
 </html>
