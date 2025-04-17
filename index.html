@@ -3,23 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <title>VIP Quest</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
-
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      padding: 40px;
-      font-family: 'Orbitron', sans-serif;
-      background-color: #0e0e0e;
-      color: #eaeaea;
+      padding: 0;
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: #0d0d0d;
+      color: #f0f0f0;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
       min-height: 100vh;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .intro, .quest-section {
+      max-width: 700px;
+      text-align: center;
+      padding: 30px;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .intro {
+      opacity: 1;
+    }
+
+    .hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.98);
+    }
+
+    .title {
+      font-size: 3em;
+      margin-bottom: 30px;
+      color: #00ffc3;
+    }
+
+    .description {
+      font-size: 1.2em;
+      line-height: 1.7;
+      color: #b5b5b5;
+    }
+
+    .play-btn {
+      margin-top: 40px;
+      padding: 16px 32px;
+      font-size: 1.1em;
+      background-color: #00ffc3;
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .play-btn:hover {
+      background-color: #00caa1;
     }
 
     .letter-display {
@@ -31,20 +77,8 @@
       font-weight: bold;
     }
 
-    .container {
-      max-width: 700px;
-      text-align: center;
-    }
-
-    .description {
-      font-size: 1.1em;
-      line-height: 1.7;
-      margin-bottom: 50px;
-      color: #ccc;
-    }
-
     .question {
-      font-size: 2em;
+      font-size: 1.8em;
       color: #ffcc00;
       margin-bottom: 20px;
     }
@@ -53,54 +87,48 @@
       padding: 12px 15px;
       width: 300px;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 1em;
-      background-color: #222;
+      background-color: #1e1e1e;
       color: #fff;
       outline: none;
     }
 
-    button {
+    button.submit {
       margin-left: 10px;
       padding: 12px 20px;
       font-size: 1em;
       background-color: #00ffc3;
       color: #000;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
 
-    button:hover {
+    button.submit:hover {
       background-color: #00caa1;
     }
-
-    .fade-in {
-      animation: fadeIn 0.5s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
   </style>
 </head>
 <body>
 
   <div class="letter-display" id="letters"></div>
 
-  <div class="container fade-in">
+  <div class="intro" id="intro">
+    <div class="title">Good job! Vitaj, bratku</div>
     <div class="description">
-      Čaká ťa séria niekoľkých výziev, po ktorých splnení sa ti odomkne unikátna informácia s miestom, časom, a všetkými detailmi tvojej ponuky na VIP oslavu. Alkohol? Turistika? Herne? Šport? Sparing s Furym?<br><br>
-      Môže to byť čokoľvek z toho bratku. Ty sa len modli, aby si to vydržal.
+      Čaká ťa séria niekoľkých výziev, po ktorých splnení sa ti odomkne unikátna informácia s miestom, časom a všetkými detailmi tvojej ponuky na VIP oslavu.<br><br>
+      Alkohol? Turistika? Herne? Šport? Sparing s Furym?<br><br>
+      Môže to byť čokoľvek z toho, bratku. Ty sa len modli, aby si to vydržal.
     </div>
+    <button class="play-btn" onclick="startGame()">PLAY</button>
+  </div>
 
+  <div class="quest-section hidden" id="questSection">
     <div class="question" id="question">Quest n. 1:<br>O akom čase chodil Muhammad Ali pravidelne trénovať do fitka?</div>
-
     <input type="text" id="answerInput">
-    <button onclick="submitAnswer()">Odoslať</button>
+    <button class="submit" onclick="submitAnswer()">Odoslať</button>
   </div>
 
   <script>
@@ -120,11 +148,16 @@
     let currentQuestion = 0;
     let letters = "";
 
+    function startGame() {
+      document.getElementById("intro").classList.add("hidden");
+      document.getElementById("questSection").classList.remove("hidden");
+    }
+
     function submitAnswer() {
       const userInput = document.getElementById("answerInput").value.trim();
       const correctAnswer = questions[currentQuestion].answer;
 
-      // Záznam do logu (ak máš backend)
+      // Ak máš backend:
       fetch('/log', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -137,11 +170,7 @@
         currentQuestion++;
 
         if (currentQuestion < questions.length) {
-          const q = document.getElementById("question");
-          q.classList.remove("fade-in");
-          void q.offsetWidth; // restart animácie
-          q.classList.add("fade-in");
-          q.innerHTML = questions[currentQuestion].text;
+          document.getElementById("question").innerHTML = questions[currentQuestion].text;
           document.getElementById("answerInput").value = "";
         } else {
           document.getElementById("question").innerHTML = "🔥 Gratulujem, zvládol si všetky questy!";
