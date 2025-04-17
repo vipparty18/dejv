@@ -224,6 +224,8 @@ if (wrongAnswers >= 3) {
 function submitAnswer() {
   const userInput = document.getElementById("answerInput").value.trim();
   const correctAnswer = questions[currentQuestion].answer;
+  fetch('/saveCooldown', { method: 'POST' });
+
 
   // Zaznamenávanie cez backend
   fetch('/log', {
@@ -292,6 +294,9 @@ function resetAttempts() {
   </script>
 <div id="blockedMessage" class="hidden" style="color: #ff0000; font-size: 1.5em; text-align: center; margin-top: 50px;">
   ⚠️ Stránka bola zablokovaná! Máš viac ako 3 nesprávne odpovede.
+</div>
+  <div id="countdown" class="hidden">
+  <p id="countdownTimer">⏳ Čakaj na ďalší quest...</p>
 </div>
 
 </body>
