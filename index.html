@@ -194,13 +194,16 @@ function startCountdown(msLeft) {
       }
     ];
 
-    let currentQuestion = 0;
-    let letters = "";
+    async function startGame() {
+  document.getElementById("intro").classList.add("hidden");
 
-    function startGame() {
-      document.getElementById("intro").classList.add("hidden");
-      document.getElementById("questSection").classList.remove("hidden");
-    }
+  const cooldown = await checkCooldown();
+
+  if (!cooldown) {
+    document.getElementById("questSection").classList.remove("hidden");
+  }
+}
+
 
     let attempts = 2;
 let wrongAnswers = localStorage.getItem('wrongAnswers') ? parseInt(localStorage.getItem('wrongAnswers')) : 0;
@@ -289,6 +292,9 @@ function resetAttempts() {
   
   // Obnoví stránku (reload)
   location.reload();
+}
+window.onload = async () => {
+  await checkCooldown(); // Zistí, či má čakať
 }
 
   </script>
