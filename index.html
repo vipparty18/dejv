@@ -4,59 +4,104 @@
   <meta charset="UTF-8">
   <title>VIP Quest</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background-color: #111;
-      color: #fff;
-      padding: 30px;
+      margin: 0;
+      padding: 40px;
+      font-family: 'Orbitron', sans-serif;
+      background-color: #0e0e0e;
+      color: #eaeaea;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
     }
-    h1 {
-      font-size: 3em;
-      color: #00ffcc;
-    }
-    .description {
-      margin-bottom: 40px;
-      font-size: 1.2em;
-    }
-    .question {
-      font-size: 2em;
-      margin-bottom: 10px;
-      font-family: 'Courier New', Courier, monospace;
-      color: #ffcc00;
-    }
-    input[type="text"] {
-      padding: 10px;
-      font-size: 1.2em;
-      width: 300px;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 1em;
-      margin-left: 10px;
-      cursor: pointer;
-    }
+
     .letter-display {
-      font-size: 2.5em;
-      font-weight: bold;
-      color: #ff0077;
       position: fixed;
       top: 20px;
       right: 30px;
+      font-size: 2.5em;
+      color: #00ffc3;
+      font-weight: bold;
     }
+
+    .container {
+      max-width: 700px;
+      text-align: center;
+    }
+
+    .description {
+      font-size: 1.1em;
+      line-height: 1.7;
+      margin-bottom: 50px;
+      color: #ccc;
+    }
+
+    .question {
+      font-size: 2em;
+      color: #ffcc00;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      padding: 12px 15px;
+      width: 300px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      background-color: #222;
+      color: #fff;
+      outline: none;
+    }
+
+    button {
+      margin-left: 10px;
+      padding: 12px 20px;
+      font-size: 1em;
+      background-color: #00ffc3;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #00caa1;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
   </style>
 </head>
 <body>
 
   <div class="letter-display" id="letters"></div>
 
-  <div class="description">
-    Čaká ťa séria niekoľkých výziev, po ktorých splnení sa ti odomkne unikátna informácia s miestom, časom, a všetkými detailmi tvojej ponuky na VIP oslavu. Alkohol? Turistika? Herne? Šport? Sparing s Furym?<br><br>
-    Môže to byť čokoľvek z toho bratku. Ty sa len modli, aby si to vydržal.
-  </div>
+  <div class="container fade-in">
+    <div class="description">
+      Čaká ťa séria niekoľkých výziev, po ktorých splnení sa ti odomkne unikátna informácia s miestom, časom, a všetkými detailmi tvojej ponuky na VIP oslavu. Alkohol? Turistika? Herne? Šport? Sparing s Furym?<br><br>
+      Môže to byť čokoľvek z toho bratku. Ty sa len modli, aby si to vydržal.
+    </div>
 
-  <div class="question" id="question">Quest n. 1:<br>O akom čase chodil Muhammad Ali pravidelne trénovať do fitka?</div>
-  <input type="text" id="answerInput">
-  <button onclick="submitAnswer()">Odoslať</button>
+    <div class="question" id="question">Quest n. 1:<br>O akom čase chodil Muhammad Ali pravidelne trénovať do fitka?</div>
+
+    <input type="text" id="answerInput">
+    <button onclick="submitAnswer()">Odoslať</button>
+  </div>
 
   <script>
     const questions = [
@@ -79,7 +124,7 @@
       const userInput = document.getElementById("answerInput").value.trim();
       const correctAnswer = questions[currentQuestion].answer;
 
-      // Uloženie odpovede na server
+      // Záznam do logu (ak máš backend)
       fetch('/log', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -92,13 +137,17 @@
         currentQuestion++;
 
         if (currentQuestion < questions.length) {
-          document.getElementById("question").innerHTML = questions[currentQuestion].text;
+          const q = document.getElementById("question");
+          q.classList.remove("fade-in");
+          void q.offsetWidth; // restart animácie
+          q.classList.add("fade-in");
+          q.innerHTML = questions[currentQuestion].text;
           document.getElementById("answerInput").value = "";
         } else {
-          document.getElementById("question").innerHTML = "Gratulujem, všetko si zvládol!";
+          document.getElementById("question").innerHTML = "🔥 Gratulujem, zvládol si všetky questy!";
         }
       } else {
-        alert("Nesprávna odpoveď, skús znova!");
+        alert("❌ Nesprávna odpoveď, skús znova!");
       }
     }
   </script>
