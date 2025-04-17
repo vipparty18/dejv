@@ -212,9 +212,14 @@
         nextQuestUnlockTime = Date.now() + 24 * 60 * 60 * 1000; // 24 hodín
         localStorage.setItem('nextQuestUnlockTime', nextQuestUnlockTime);
 
-        // Spustíme odpočítavanie
-        document.getElementById("countdown").classList.remove("hidden");
-        startCountdown();
+        // Skryj odpočítavanie, kým nebude správna odpoveď
+        document.getElementById("countdown").classList.add("hidden");
+
+        // Spustíme odpočítavanie po správnej odpovedi
+        setTimeout(() => {
+          document.getElementById("countdown").classList.remove("hidden");
+          startCountdown();
+        }, 500);
 
         // Ak sme prešli všetky otázky, zobrazíme gratuláciu
         if (currentQuestion < questions.length) {
