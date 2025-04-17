@@ -170,10 +170,15 @@
 
     function startGame() {
       document.getElementById("intro").classList.add("hidden");
-      document.getElementById("questSection").classList.remove("hidden");
-      document.getElementById("question").innerHTML = questions[currentQuestion].text;
-      document.getElementById("letters").textContent = letters;
-      document.getElementById("tries").textContent = attempts;
+      if (Date.now() < nextQuestUnlockTime) {
+        document.getElementById("countdown").classList.remove("hidden");
+        startCountdown();
+      } else {
+        document.getElementById("questSection").classList.remove("hidden");
+        document.getElementById("question").innerHTML = questions[currentQuestion].text;
+        document.getElementById("letters").textContent = letters;
+        document.getElementById("tries").textContent = attempts;
+      }
     }
 
     function submitAnswer() {
@@ -213,7 +218,7 @@
         }
 
         if (attempts <= 0) {
-          alert("❌ Nesprávna odpovedť, máš ešte " + attempts + " pokus(y).");
+          alert("❌ Nesprávna odpovedť, máš ešte " + attempts + " pokus(y). Znova sa snaž.");
         }
       }
     }
