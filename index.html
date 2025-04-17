@@ -114,6 +114,11 @@
       font-size: 1.5em;
       color: #ff0000;
       margin-top: 20px;
+      visibility: hidden;
+    }
+
+    #countdown.visible {
+      visibility: visible;
     }
   </style>
 </head>
@@ -172,6 +177,7 @@
       document.getElementById("intro").classList.add("hidden");
       if (Date.now() < nextQuestUnlockTime) {
         document.getElementById("countdown").classList.remove("hidden");
+        document.getElementById("countdown").classList.add("visible");
         startCountdown();
       } else {
         document.getElementById("questSection").classList.remove("hidden");
@@ -201,6 +207,7 @@
 
         document.getElementById("questSection").classList.add("hidden");
         document.getElementById("countdown").classList.remove("hidden");
+        document.getElementById("countdown").classList.add("visible");
         startCountdown();
       } else {
         attempts--;
@@ -225,10 +232,12 @@
 
     function startCountdown() {
       const countdownElement = document.getElementById("countdown");
+      countdownElement.classList.add("visible");
       const countdownInterval = setInterval(() => {
         const timeLeft = nextQuestUnlockTime - Date.now();
         if (timeLeft <= 0) {
           clearInterval(countdownInterval);
+          countdownElement.classList.remove("visible");
           countdownElement.classList.add("hidden");
           if (currentQuestion < questions.length) {
             document.getElementById("questSection").classList.remove("hidden");
