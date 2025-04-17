@@ -138,6 +138,49 @@
   </div>
 
   <script>
+    async function checkCooldown() {
+  const response = await fetch('/checkCooldown');
+  const data = await response.json();
+  const now = Date.now();
+
+  if (data.unlockTime && data.unlockTime > now) {
+    const remaining = data.unlockTime - now;
+    startCountdown(remaining);
+    return true; // cooldown still active
+  }
+  return false; // cooldown over
+}
+
+async function startQuest() {
+  const isCooldown = await checkCooldown();
+  if (isCooldown) {
+    document.getElementById("questSection").style.display = "none";
+    document.getElementById("countdown").style.display = "block";
+  } else {
+    document.getElementById("questSection").style.display = "block";
+    document.getElementById("countdown").style.display = "none";
+  }
+}
+
+function startCountdown(msLeft) {
+  const countdownDiv = document.getElementById("countdownTimer");
+
+  const interval = setInterval(() => {
+    const hours = Math.floor(msLeft / (1000 * 60 * 60));
+    const minutes = Math.floor((msLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((msLeft % (1000 * 60)) / 1000);
+
+    countdownDiv.textContent = `⏳ Ďalší quest sa odomkne o ${hours}h ${minutes}m ${seconds}s`;
+    msLeft -= 1000;
+
+    if (msLeft <= 0) {
+      clearInterval(interval);
+      location.reload();
+    }
+  }, 1000);
+}
+
+    
     const questions = [
       {
         text: "Quest n. 1:<br>O akom čase chodil Muhammad Ali pravidelne trénovať do fitka?",
