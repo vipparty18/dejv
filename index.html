@@ -1,53 +1,107 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TEIQue Výsledky</title>
+  <meta charset="UTF-8">
+  <title>VIP Quest</title>
   <style>
     body {
-      font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      background: #f3f4f6;
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #fff;
+      padding: 30px;
     }
-    input, button {
+    h1 {
+      font-size: 3em;
+      color: #00ffcc;
+    }
+    .description {
+      margin-bottom: 40px;
+      font-size: 1.2em;
+    }
+    .question {
+      font-size: 2em;
+      margin-bottom: 10px;
+      font-family: 'Courier New', Courier, monospace;
+      color: #ffcc00;
+    }
+    input[type="text"] {
       padding: 10px;
-      font-size: 1rem;
-      margin-top: 10px;
+      font-size: 1.2em;
+      width: 300px;
     }
-    .box {
-      padding: 2rem;
-      border-radius: 1rem;
-      background: white;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    .letter-display {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #ff0077;
+      position: fixed;
+      top: 20px;
+      right: 30px;
     }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h2>Zadaj svoje zviera 🐾</h2>
-    <input type="text" id="animalId" placeholder="napr. sova" />
-    <button onclick="openPDF()">Zobraziť vyhodnotenie</button>
-    <p id="error" style="color: red;"></p>
+
+  <div class="letter-display" id="letters"></div>
+
+  <div class="description">
+    Čaká ťa séria niekoľkých výziev, po ktorých splnení sa ti odomkne unikátna informácia s miestom, časom, a všetkými detailmi tvojej ponuky na VIP oslavu. Alkohol? Turistika? Herne? Šport? Sparing s Furym?<br><br>
+    Môže to byť čokoľvek z toho bratku. Ty sa len modli, aby si to vydržal.
   </div>
 
+  <div class="question" id="question">Quest n. 1:<br>O akom čase chodil Muhammad Ali pravidelne trénovať do fitka?</div>
+  <input type="text" id="answerInput">
+  <button onclick="submitAnswer()">Odoslať</button>
+
   <script>
-    function openPDF() {
-      const animal = document.getElementById('animalId').value.trim().toLowerCase();
-      const url = `/pdfs/${animal}.pdf`;
-      fetch(url)
-        .then(res => {
-          if (!res.ok) throw new Error("PDF nenájdené.");
-          window.open(url, '_blank');
-        })
-        .catch(() => {
-          document.getElementById('error').textContent = "Takéto zviera sme nenašli 😔";
-        });
+    const questions = [
+      {
+        text: "Quest n. 1:<br>O akom čase chodil Muhammad Ali pravidelne trénovať do fitka?",
+        answer: "12:00",
+        letter: "E"
+      },
+      {
+        text: "Quest n. 2:<br>Koľko zarába Milan Urbaník?",
+        answer: "999999",
+        letter: "I"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let letters = "";
+
+    function submitAnswer() {
+      const userInput = document.getElementById("answerInput").value.trim();
+      const correctAnswer = questions[currentQuestion].answer;
+
+      // Uloženie odpovede na server
+      fetch('/log', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({question: currentQuestion + 1, answer: userInput})
+      });
+
+      if (userInput === correctAnswer) {
+        letters += questions[currentQuestion].letter;
+        document.getElementById("letters").textContent = letters;
+        currentQuestion++;
+
+        if (currentQuestion < questions.length) {
+          document.getElementById("question").innerHTML = questions[currentQuestion].text;
+          document.getElementById("answerInput").value = "";
+        } else {
+          document.getElementById("question").innerHTML = "Gratulujem, všetko si zvládol!";
+        }
+      } else {
+        alert("Nesprávna odpoveď, skús znova!");
+      }
     }
   </script>
+
 </body>
 </html>
