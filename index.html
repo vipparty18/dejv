@@ -1,94 +1,137 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
-  <meta charset="UTF-8">
-  <title>VIP Quest</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VIP Výzva</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; }
     body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #e0e0e0;
       margin: 0;
-      padding: 0;
-      font-family: 'Space Grotesk', sans-serif;
-      background-color: #0d0d0d;
-      color: #f0f0f0;
-    }
-    .intro, .quest-section {
-      width: 100%;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
-      padding: 40px 20px;
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      min-height: 100vh;
     }
-    .hidden {
-      display: none;
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      color: #ffffff;
     }
-    .title {
-      font-size: 3em;
-      margin-bottom: 20px;
-      color: #00ffc3;
+
+    p {
+      font-size: 1.1rem;
+      max-width: 640px;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+      color: #d0d0d0;
     }
-    .description {
-      font-size: 1.2em;
-      color: #b5b5b5;
-    }
-    .play-btn {
-      margin-top: 30px;
-      padding: 16px 32px;
-      font-size: 1.1em;
-      background-color: #00ffc3;
-      color: #000;
+
+    button {
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background-color: #4ade80;
+      color: #111827;
       border: none;
       border-radius: 12px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: background 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
-    .play-btn:hover {
-      background-color: #00caa1;
+
+    button:hover {
+      background-color: #22c55e;
+      transform: scale(1.05);
     }
-    .question {
-      font-size: 2em;
-      color: #ffcc00;
-      margin-bottom: 20px;
+
+    .hidden {
+      display: none;
     }
+
+    .quest {
+      margin-top: 3rem;
+      max-width: 700px;
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .quest h2 {
+      font-size: 2rem;
+      color: #ffffff;
+      margin-bottom: 1rem;
+    }
+
     iframe {
+      margin-top: 1.5rem;
       width: 100%;
-      height: 550px;
+      max-width: 100%;
+      height: 539px;
       border: none;
+      border-radius: 8px;
+    }
+
+    .after-submit {
+      margin-top: 1.5rem;
+      font-weight: 600;
+      color: #bbf7d0;
     }
   </style>
 </head>
 <body>
-
-<div class="intro" id="intro">
-  <div class="title">Good job! Vitaj, bratku.</div>
-  <div class="description">
-    Čaká ťa séria výziev. Po ich splnení získaš VIP informácie o oslave.<br><br>
+  <h1>Good job! Vitaj, bratku.</h1>
+  <p>
+    Čaká ťa séria výziev. Po ich splnení získaš informácie o mieste, čase a detailoch tvojej VIP oslavy.<br><br>
     Môže to byť čokoľvek. Ty sa len modli, aby si to vydržal.
+  </p>
+
+  <button id="playBtn">Play</button>
+
+  <div id="questSection" class="quest hidden">
+    <h2>Quest n. 1:</h2>
+    <p>O akom čase chodil Muhammad Ali pravidelne trénovať do fitka?</p>
+    <p><strong>Máš len 2 pokusy na správnu odpoveď.</strong></p>
+
+    <iframe
+      id="JotFormIFrame-251066510270042"
+      title="Form"
+      onload="window.parent.scrollTo(0,0)"
+      allowtransparency="true"
+      allow="geolocation; microphone; camera; fullscreen"
+      src="https://form.jotform.com/251066510270042"
+      frameborder="0"
+      scrolling="no"
+    ></iframe>
+    <script src='https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js'></script>
+    <script>
+      window.jotformEmbedHandler(
+        "iframe[id='JotFormIFrame-251066510270042']",
+        "https://form.jotform.com/"
+      );
+    </script>
+
+    <div class="after-submit">
+      V prípade správnej odpovede bude nasledujúci Quest sprístupnený o 24 hodín.
+    </div>
   </div>
-  <button class="play-btn" onclick="startGame()">PLAY</button>
-</div>
 
-<div class="quest-section hidden" id="questSection">
-  <div class="question" id="question"></div>
-  <iframe
-    id="JotFormIFrame-251066510270042"
-    title="Form"
-    allowtransparency="true"
-    allow="geolocation; microphone; camera; fullscreen"
-    src="https://form.jotform.com/251066510270042"
-    frameborder="0"
-    scrolling="no">
-  </iframe>
-</div>
+  <script>
+    const playBtn = document.getElementById("playBtn");
+    const questSection = document.getElementById("questSection");
 
-<script>
-  function startGame() {
-    document.getElementById("intro").classList.add("hidden");
-    document.getElementById("questSection").classList.remove("hidden");
-    document.getElementById("question").innerHTML = "Quest n. 1:<br>O akom čase chodil Muhammad Ali pravidelne trénovať do fitka?";
-    window.scrollTo(0, 0); // posunie stránku úplne hore
-  }
-</script>
-
+    playBtn.addEventListener("click", () => {
+      questSection.classList.remove("hidden");
+      playBtn.classList.add("hidden");
+    });
+  </script>
 </body>
 </html>
