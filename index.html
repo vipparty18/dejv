@@ -160,7 +160,9 @@
     }
 
     let attempts = 2;
-let wrongAnswers = localStorage.getItem('wrongAnswers') ? parseInt(localStorage.getItem('wrongAnswers')) : 0; // Načítaj počet z predchádzajúcej návštevy
+let wrongAnswers = localStorage.getItem('wrongAnswers') ? parseInt(localStorage.getItem('wrongAnswers')) : 0;
+let currentQuestion = localStorage.getItem('currentQuestion') ? parseInt(localStorage.getItem('currentQuestion')) : 0; // Načítanie poslednej zodpovedanej otázky
+let letters = localStorage.getItem('letters') || ""; // Načítanie už získaných písmen
 
 // Ak sú 3 nesprávne odpovede, okamžite zablokuj stránku
 if (wrongAnswers >= 3) {
@@ -168,6 +170,12 @@ if (wrongAnswers >= 3) {
   document.getElementById("questSection").classList.add("hidden");
   document.getElementById("warning").style.display = "none";
   document.getElementById("attemptsLeft").style.display = "none";
+  document.getElementById("resetButton").classList.remove("hidden"); // Zobraziť tlačidlo na obnovu
+} else {
+  // Načítanie otázky na základe poslednej odpovedanej otázky
+  document.getElementById("question").innerHTML = questions[currentQuestion].text;
+  document.getElementById("letters").textContent = letters;
+  document.getElementById("tries").textContent = attempts;
 }
 
 function submitAnswer() {
@@ -189,8 +197,10 @@ function submitAnswer() {
     attempts = 2;
     wrongAnswers = 0;  // Reset na správnu odpoveď
 
-    // Resetuj počet nesprávnych odpovedí v localStorage po správnej odpovedi
+    // Ulož aktuálnu otázku a získané písmená
     localStorage.setItem('wrongAnswers', wrongAnswers);
+    localStorage.setItem('currentQuestion', currentQuestion);
+    localStorage.setItem('letters', letters);
 
     if (currentQuestion < questions.length) {
       document.getElementById("question").innerHTML = questions[currentQuestion].text;
@@ -215,6 +225,7 @@ function submitAnswer() {
       document.getElementById("questSection").classList.add("hidden");
       document.getElementById("warning").style.display = "none";
       document.getElementById("attemptsLeft").style.display = "none";
+      document.getElementById("resetButton").classList.remove("hidden");
       alert("❌ Stránka je zablokovaná! Vyčerpal si viac ako 3 nesprávne odpovede.");
       return; // Po blokovaní už nič neudeláme
     }
@@ -224,6 +235,17 @@ function submitAnswer() {
     }
   }
 }
+
+function resetAttempts() {
+  // Vymaže údaje o nesprávnych odpovediach a stave otázok zo localStorage
+  localStorage.removeItem('wrongAnswers');
+  localStorage.removeItem('currentQuestion');
+  localStorage.removeItem('letters');
+  
+  // Obnoví stránku (reload)
+  location.reload();
+}
+
   </script>
 <div id="blockedMessage" class="hidden" style="color: #ff0000; font-size: 1.5em; text-align: center; margin-top: 50px;">
   ⚠️ Stránka bola zablokovaná! Máš viac ako 3 nesprávne odpovede.
