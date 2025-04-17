@@ -163,102 +163,107 @@
     ];
 
     let attempts = 2;
-let wrongAnswers = localStorage.getItem('wrongAnswers') ? parseInt(localStorage.getItem('wrongAnswers')) : 0;
-let currentQuestion = localStorage.getItem('currentQuestion') ? parseInt(localStorage.getItem('currentQuestion')) : 0;
-let letters = localStorage.getItem('letters') || "";
-let nextQuestUnlockTime = localStorage.getItem('nextQuestUnlockTime') ? parseInt(localStorage.getItem('nextQuestUnlockTime')) : 0;
-
-if (wrongAnswers >= 3) {
-  document.getElementById("blockedMessage").classList.remove("hidden");
-  document.getElementById("questSection").classList.add("hidden");
-  document.getElementById("warning").style.display = "none";
-  document.getElementById("attemptsLeft").style.display = "none";
-} else if (nextQuestUnlockTime > Date.now()) {
-  // Ak je odpočítavanie stále aktívne, zobrazíme iba odpočítavanie a nie ďalšiu otázku
-  document.getElementById("countdown").classList.remove("hidden");
-  document.getElementById("questSection").classList.add("hidden");
-  startCountdown();
-} else {
-  // Ak uplynulo 24 hodín, môžeme zobraziť ďalšiu otázku
-  document.getElementById("question").innerHTML = questions[currentQuestion].text;
-  document.getElementById("letters").textContent = letters;
-  document.getElementById("tries").textContent = attempts;
-  document.getElementById("questSection").classList.remove("hidden");
-}
-
-// Funkcia na odoslanie odpovede
-function submitAnswer() {
-  const userInput = document.getElementById("answerInput").value.trim();
-  const correctAnswer = questions[currentQuestion].answer;
-
-  if (userInput === correctAnswer) {
-    letters += questions[currentQuestion].letter;
-    document.getElementById("letters").textContent = letters;
-    currentQuestion++;
-    attempts = 2;
-    wrongAnswers = 0;
-
-    localStorage.setItem('wrongAnswers', wrongAnswers);
-    localStorage.setItem('currentQuestion', currentQuestion);
-    localStorage.setItem('letters', letters);
-
-    // Uloženie času, kedy sa ďalší quest odomkne (po 24 hodinách)
-    nextQuestUnlockTime = Date.now() + 24 * 60 * 60 * 1000; // 24 hodín
-    localStorage.setItem('nextQuestUnlockTime', nextQuestUnlockTime);
-
-    // Spustíme odpočítavanie
-    document.getElementById("countdown").classList.remove("hidden");
-    startCountdown();
-
-    // Ak sme prešli všetky otázky, zobrazíme gratuláciu
-    if (currentQuestion < questions.length) {
-      document.getElementById("question").innerHTML = questions[currentQuestion].text;
-      document.getElementById("answerInput").value = "";
-      document.getElementById("tries").textContent = attempts;
-    } else {
-      document.getElementById("question").innerHTML = "🔥 Gratulujem, zvládol si všetky questy!";
-      document.getElementById("warning").style.display = "none";
-      document.getElementById("attemptsLeft").style.display = "none";
-    }
-  } else {
-    attempts--;
-    wrongAnswers++;
-    localStorage.setItem('wrongAnswers', wrongAnswers);
-    document.getElementById("tries").textContent = attempts;
+    let wrongAnswers = localStorage.getItem('wrongAnswers') ? parseInt(localStorage.getItem('wrongAnswers')) : 0;
+    let currentQuestion = localStorage.getItem('currentQuestion') ? parseInt(localStorage.getItem('currentQuestion')) : 0;
+    let letters = localStorage.getItem('letters') || "";
+    let nextQuestUnlockTime = localStorage.getItem('nextQuestUnlockTime') ? parseInt(localStorage.getItem('nextQuestUnlockTime')) : 0;
 
     if (wrongAnswers >= 3) {
       document.getElementById("blockedMessage").classList.remove("hidden");
       document.getElementById("questSection").classList.add("hidden");
       document.getElementById("warning").style.display = "none";
       document.getElementById("attemptsLeft").style.display = "none";
-      alert("❌ Stránka je zablokovaná! Vyčerpal si viac ako 3 nesprávne odpovede.");
-      return;
-    }
-
-    if (attempts <= 0) {
-      alert("❌ Nesprávna odpovedť, máš ešte " + attempts + " pokus(y).");
-    }
-  }
-}
-
-// Funkcia na odpočítavanie času
-function startCountdown() {
-  const countdownElement = document.getElementById("countdown");
-  const countdownInterval = setInterval(() => {
-    const timeLeft = nextQuestUnlockTime - Date.now();
-    if (timeLeft <= 0) {
-      clearInterval(countdownInterval);
-      countdownElement.innerHTML = "⏳ Čakaj na ďalší quest... (Ready to continue!)";
-      document.getElementById("questSection").classList.remove("hidden"); // Zobrazíme ďalšiu otázku
+    } else if (nextQuestUnlockTime > Date.now()) {
+      // Ak je odpočítavanie stále aktívne, zobrazíme iba odpočítavanie a nie ďalšiu otázku
+      document.getElementById("countdown").classList.remove("hidden");
+      document.getElementById("questSection").classList.add("hidden");
+      startCountdown();
     } else {
-      const hours = Math.floor(timeLeft / (1000 * 60 * 60));
-      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-      countdownElement.innerHTML = `⏳ Čakaj na ďalší quest... ${hours}:${minutes}:${seconds}`;
+      // Ak uplynulo 24 hodín, môžeme zobraziť ďalšiu otázku
+      document.getElementById("question").innerHTML = questions[currentQuestion].text;
+      document.getElementById("letters").textContent = letters;
+      document.getElementById("tries").textContent = attempts;
+      document.getElementById("questSection").classList.remove("hidden");
     }
-  }, 1000);
-}
 
+    // Funkcia na spustenie hry (skryje úvodnú obrazovku a zobrazí sekciu s úlohami)
+    function startGame() {
+      document.getElementById("intro").classList.add("hidden");
+      document.getElementById("questSection").classList.remove("hidden");
+    }
+
+    // Funkcia na odoslanie odpovede
+    function submitAnswer() {
+      const userInput = document.getElementById("answerInput").value.trim();
+      const correctAnswer = questions[currentQuestion].answer;
+
+      if (userInput === correctAnswer) {
+        letters += questions[currentQuestion].letter;
+        document.getElementById("letters").textContent = letters;
+        currentQuestion++;
+        attempts = 2;
+        wrongAnswers = 0;
+
+        localStorage.setItem('wrongAnswers', wrongAnswers);
+        localStorage.setItem('currentQuestion', currentQuestion);
+        localStorage.setItem('letters', letters);
+
+        // Uloženie času, kedy sa ďalší quest odomkne (po 24 hodinách)
+        nextQuestUnlockTime = Date.now() + 24 * 60 * 60 * 1000; // 24 hodín
+        localStorage.setItem('nextQuestUnlockTime', nextQuestUnlockTime);
+
+        // Spustíme odpočítavanie
+        document.getElementById("countdown").classList.remove("hidden");
+        startCountdown();
+
+        // Ak sme prešli všetky otázky, zobrazíme gratuláciu
+        if (currentQuestion < questions.length) {
+          document.getElementById("question").innerHTML = questions[currentQuestion].text;
+          document.getElementById("answerInput").value = "";
+          document.getElementById("tries").textContent = attempts;
+        } else {
+          document.getElementById("question").innerHTML = "🔥 Gratulujem, zvládol si všetky questy!";
+          document.getElementById("warning").style.display = "none";
+          document.getElementById("attemptsLeft").style.display = "none";
+        }
+      } else {
+        attempts--;
+        wrongAnswers++;
+        localStorage.setItem('wrongAnswers', wrongAnswers);
+        document.getElementById("tries").textContent = attempts;
+
+        if (wrongAnswers >= 3) {
+          document.getElementById("blockedMessage").classList.remove("hidden");
+          document.getElementById("questSection").classList.add("hidden");
+          document.getElementById("warning").style.display = "none";
+          document.getElementById("attemptsLeft").style.display = "none";
+          alert("❌ Stránka je zablokovaná! Vyčerpal si viac ako 3 nesprávne odpovede.");
+          return;
+        }
+
+        if (attempts <= 0) {
+          alert("❌ Nesprávna odpovedť, máš ešte " + attempts + " pokus(y).");
+        }
+      }
+    }
+
+    // Funkcia na odpočítavanie času
+    function startCountdown() {
+      const countdownElement = document.getElementById("countdown");
+      const countdownInterval = setInterval(() => {
+        const timeLeft = nextQuestUnlockTime - Date.now();
+        if (timeLeft <= 0) {
+          clearInterval(countdownInterval);
+          countdownElement.innerHTML = "⏳ Čakaj na ďalší quest... (Ready to continue!)";
+          document.getElementById("questSection").classList.remove("hidden"); // Zobrazíme ďalšiu otázku
+        } else {
+          const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+          const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+          countdownElement.innerHTML = `⏳ Čakaj na ďalší quest... ${hours}:${minutes}:${seconds}`;
+        }
+      }, 1000);
+    }
   </script>
 
 </body>
