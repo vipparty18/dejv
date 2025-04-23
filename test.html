@@ -98,6 +98,12 @@
       border-color: #4f46e5;
     }
 
+    .dot {
+      font-size: 2rem;
+      margin: 0 0.5rem;
+      line-height: 3rem;
+    }
+
     .letters {
       margin-top: 2rem;
       font-size: 2rem;
@@ -128,9 +134,9 @@
         <input type="text" maxlength="1" data-index="4" />
         <input type="text" maxlength="1" data-index="5" />
         <input type="text" maxlength="1" data-index="6" />
-        <input type="text" maxlength="1" data-index="7" value="." />
+        <span class="dot">.</span>
+        <input type="text" maxlength="1" data-index="7" />
         <input type="text" maxlength="1" data-index="8" />
-        <input type="text" maxlength="1" data-index="9" />
       </div>
       <div class="letters" id="lettersOutput">&nbsp;</div>
     </div>
@@ -144,7 +150,6 @@
     const playBtn = document.getElementById("playBtn");
     const questionSection = document.getElementById("questionSection");
     const questionContainer = document.getElementById("questionContainer");
-    const inputs = document.querySelectorAll(".input-group input[data-index]");
     const lettersOutput = document.getElementById("lettersOutput");
     const body = document.body;
 
@@ -168,10 +173,30 @@
       return letters;
     };
 
-    const updateLetters = () => {
+    const updateLetters = (inputs) => {
       const inputValue = Array.from(inputs).map(input => input.value).join("");
       lettersOutput.textContent = generateLetters(inputValue);
     };
 
-    inputs.forEach((input, index) => {
-      input.addEventListener("input", (e) => {
+    playBtn.addEventListener("click", () => {
+      questionContainer.classList.remove("hidden");
+      playBtn.classList.add("hidden");
+      body.classList.remove("with-bg");
+
+      const inputs = document.querySelectorAll(".input-group input[data-index]");
+
+      inputs.forEach((input, index) => {
+        input.addEventListener("input", (e) => {
+          if (e.target.value.length === 1) {
+            const nextInput = document.querySelector(`.input-group input[data-index='${index + 1}']`);
+            if (nextInput) {
+              nextInput.focus();
+            }
+          }
+          updateLetters(inputs);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
