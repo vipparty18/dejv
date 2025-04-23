@@ -125,10 +125,21 @@
     </div>
     <div class="letters" id="lettersOutput">&nbsp;</div>
   </div>
+  <div class="verse-section">
+      <div class="verse-text">
+        Oznámil som mu, že budem večne trestať jeho dom pre hriech, lebo vedel, že sa jeho synovia rúhajú, a nekarhal ich.
+      </div>
+      <div class="verse-inputs">
+        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" />
+      </div>
+    </div>
+  </div>
 
   <script>
     const playBtn = document.getElementById("playBtn");
-    const questionSection = document.getElementById("questionSection");
+    const mainSection = document.getElementById("mainSection");
     const inputs = document.querySelectorAll(".input-group input[data-index]");
     const lettersOutput = document.getElementById("lettersOutput");
     const body = document.body;
@@ -141,15 +152,11 @@
       const consonants = "BCDFGHJKLMNPQRSTVWXYZ";
       const vowels = "AEIOU";
       let letters = "";
-
       for (let i = 0; i < 10; i++) {
-        if (i % 2 === 0) {
-          letters += consonants.charAt(Math.floor(Math.random() * consonants.length));
-        } else {
-          letters += vowels.charAt(Math.floor(Math.random() * vowels.length));
-        }
+        letters += i % 2 === 0
+          ? consonants.charAt(Math.floor(Math.random() * consonants.length))
+          : vowels.charAt(Math.floor(Math.random() * vowels.length));
       }
-
       return letters;
     };
 
@@ -162,18 +169,18 @@
       input.addEventListener("input", (e) => {
         if (e.target.value.length === 1) {
           const nextInput = document.querySelector(`.input-group input[data-index='${index + 1}']`);
-          if (nextInput) {
-            nextInput.focus();
-          }
+          if (nextInput) nextInput.focus();
         }
         updateLetters();
       });
     });
 
     playBtn.addEventListener("click", () => {
-      questionSection.classList.remove("hidden");
+      mainSection.classList.remove("hidden");
       playBtn.classList.add("hidden");
       body.classList.remove("with-bg");
+      body.style.backgroundColor = '#f4f4f5';
+      body.style.backgroundImage = 'none';
     });
   </script>
 </body>
