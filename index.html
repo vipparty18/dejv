@@ -109,71 +109,11 @@
   <h1>Vitaj!</h1>
   <button id="playBtn">Play</button>
 
-  <div id="questionSection" class="question hidden">
-    <h2>Koľko zarobil za predošlý rok p. Urbaník, ak mu zo zisku odpočítame utopené náklady na tvoj noťas? Pamätaj, že p. Urbaník ho nekupoval so žiadnou zľavou.</h2>
-    <div class="input-group">
-      <input type="text" maxlength="1" data-index="0" />
-      <input type="text" maxlength="1" data-index="1" />
-      <input type="text" maxlength="1" data-index="2" />
-      <input type="text" maxlength="1" data-index="3" />
-      <input type="text" maxlength="1" data-index="4" />
-      <input type="text" maxlength="1" data-index="5" />
-      <input type="text" maxlength="1" data-index="6" />
-      <input type="text" maxlength="1" data-index="7" value="." />
-      <input type="text" maxlength="1" data-index="8" />
-      <input type="text" maxlength="1" data-index="9" />
-    </div>
-    <div class="letters" id="lettersOutput">&nbsp;</div>
-  </div>
-
   <script>
     const playBtn = document.getElementById("playBtn");
-    const questionSection = document.getElementById("questionSection");
-    const inputs = document.querySelectorAll(".input-group input[data-index]");
-    const lettersOutput = document.getElementById("lettersOutput");
-    const body = document.body;
-
-    const generateLetters = (inputValue) => {
-      const targetValue = "1570897.01";
-      if (inputValue === targetValue) {
-        return "BEGINSHERE";
-      }
-      const consonants = "BCDFGHJKLMNPQRSTVWXYZ";
-      const vowels = "AEIOU";
-      let letters = "";
-
-      for (let i = 0; i < 10; i++) {
-        if (i % 2 === 0) {
-          letters += consonants.charAt(Math.floor(Math.random() * consonants.length));
-        } else {
-          letters += vowels.charAt(Math.floor(Math.random() * vowels.length));
-        }
-      }
-
-      return letters;
-    };
-
-    const updateLetters = () => {
-      const inputValue = Array.from(inputs).map(input => input.value).join("");
-      lettersOutput.textContent = generateLetters(inputValue);
-    };
-
-    inputs.forEach((input, index) => {
-      input.addEventListener("input", (e) => {
-        if (e.target.value.length === 1) {
-          const nextInput = document.querySelector(`.input-group input[data-index='${index + 1}']`);
-          if (nextInput) {
-            nextInput.focus();
-          }
-        }
-        updateLetters();
-      });
-    });
 
     playBtn.addEventListener("click", () => {
-      questionSection.classList.remove("hidden");
-      playBtn.classList.add("hidden");
-      body.classList.remove("with-bg");
+      window.location.href = "hra.html";
     });
   </script>
 </body>
