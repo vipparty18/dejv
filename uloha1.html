@@ -25,7 +25,6 @@
       font-weight: 700;
       color: #FFEB3B;
       margin: 0 0 1.5rem 0;
-      padding: 10rem 0rem 3rem 0rem;
     }
 
     .wrapper {
@@ -83,7 +82,7 @@
       color: #FFEB3B;
     }
 
-    .letters {
+    .letters, .time-output {
       margin-top: 2rem;
       font-size: 1.5rem;
       font-weight: bold;
@@ -97,7 +96,7 @@
   <div class="wrapper">
     <!-- PRVÝ BOX -->
     <div class="question">
-      <h2>Koľko zarobil za predošlý rok p. Urbaník, ak mu zo zisku odpočítame utopené náklady na tvoj noťas?<br>Pamätaj, že p. Urbaník ho nekupoval so žiadnou zľavou.</h2>
+      <h2>Koľko zarobil za predošlý rok p. Urbaník, ak mu zo zisku odpočítame utopené náklady na tvoj noťas? Pamätaj, že p. Urbaník ho nekupoval so žiadnou zľavou.</h2>
       <div class="input-group">
         <input type="text" maxlength="1" data-index="0" />
         <input type="text" maxlength="1" data-index="1" />
@@ -115,13 +114,14 @@
 
     <!-- DRUHÝ BOX -->
     <div class="question">
-      <h2>"For I told him that I would judge his family forever because of the sin he knew about; his sons blasphemed God, and he failed to restrain them"</h2><br><br><br>
+      <h2>"For I told him that I would judge his family forever because of the sin he knew about; his sons blasphemed God, and he failed to restrain them"</h2>
       <div class="input-group">
-        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" id="t1" />
         <span class="comma">,</span>
-        <input type="text" maxlength="1" />
-        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" id="t2" />
+        <input type="text" maxlength="1" id="t3" />
       </div>
+      <div class="time-output" id="timeOutput">&nbsp;</div>
     </div>
   </div>
 
@@ -134,7 +134,7 @@
       if (inputValue === targetValue) {
         return "BEGINSHERE";
       }
-      const consonants = "BCDFGHJKLMNPRSTVZ";
+      const consonants = "BCDFGHJKLMNPQRSTVWXYZ";
       const vowels = "AEIOU";
       let letters = "";
 
@@ -163,6 +163,32 @@
           }
         }
         updateLetters();
+      });
+    });
+
+    const t1 = document.getElementById("t1");
+    const t2 = document.getElementById("t2");
+    const t3 = document.getElementById("t3");
+    const timeOutput = document.getElementById("timeOutput");
+
+    const updateTimeOutput = () => {
+      const val1 = t1.value;
+      const val2 = t2.value;
+      const val3 = t3.value;
+
+      if (val1 === "3" && val2 === "1" && val3 === "3") {
+        timeOutput.textContent = "3:13";
+      } else {
+        timeOutput.textContent = "";
+      }
+    };
+
+    [t1, t2, t3].forEach((input, index, arr) => {
+      input.addEventListener("input", () => {
+        if (input.value.length === 1 && arr[index + 1]) {
+          arr[index + 1].focus();
+        }
+        updateTimeOutput();
       });
     });
   </script>
