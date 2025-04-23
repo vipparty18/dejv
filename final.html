@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Víťazná Hra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Source Code Pro', monospace;
+      background-color: #D32F2F; /* Červená pozadie pre víťazný efekt */
+      color: white;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin: 0 0 2rem 0;
+      color: #FFEB3B; /* Zlatá farba pre zvýraznenie */
+    }
+
+    .question {
+      margin-top: 2rem;
+      background-color: #B71C1C; /* Tmavšie červené pozadie */
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 500px;
+    }
+
+    .question h2 {
+      font-size: 1.8rem;
+      color: #FFEB3B; /* Zlaté písmo pre otázku */
+      margin-bottom: 1.5rem;
+    }
+
+    .input-group {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .input-group input {
+      width: 3rem;
+      height: 3rem;
+      font-size: 2rem;
+      text-align: center;
+      border: 2px solid #FFEB3B;
+      border-radius: 8px;
+      outline: none;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .input-group input:focus {
+      border-color: #FF5722; /* Oranžová pre zvýraznenie pri focus */
+    }
+
+    button {
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background-color: #FFEB3B;
+      color: #D32F2F;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      margin-top: 2rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    button:hover {
+      background-color: #FF5722;
+      color: white;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <h1>Víťazná Hra!</h1>
+  <div class="question">
+    <h2>Vpisuj údaje do polí a zisti, čo sa stane!</h2>
+    <div class="input-group">
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" value="." />
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" />
+    </div>
+    <button>Odoslať</button>
+  </div>
+</body>
+</html>
