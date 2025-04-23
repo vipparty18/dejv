@@ -16,15 +16,15 @@
       padding: 2rem;
       display: flex;
       flex-direction: column;
-      justify-content: center; /* Vertikálne centrovanie */
-      align-items: center; /* Horizontálne centrovanie */
-      height: 100vh; /* 100% výšky obrazovky */
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
       text-align: center;
       transition: background 0.5s ease;
     }
 
     body.with-bg {
-      background-color: #0A042B; /* Okraje mimo fotky */
+      background-color: #0A042B;
       background-image: url('foto.jpg');
       background-position: center;
       background-size: contain;
@@ -35,7 +35,7 @@
       font-size: 3rem;
       font-weight: 700;
       color: white;
-      margin: 0 0 2rem 0; /* Odstráni zbytočné okraje a pridá priestor pod h1 */
+      margin: 0 0 2rem 0;
     }
 
     button {
@@ -61,20 +61,13 @@
       display: none;
     }
 
-    .question-container {
-      display: flex;
-      justify-content: space-between; /* Zabezpečí, že bloky budú vedľa seba */
-      width: 100%;
-      gap: 2rem;
-    }
-
     .question {
       margin-top: 2rem;
       background-color: #ffffff;
       padding: 2rem;
       border-radius: 16px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-      width: 48%; /* Šírka oboch blokov bude rovnaká */
+      width: 500px;
     }
 
     .question h2 {
@@ -111,14 +104,21 @@
       font-weight: bold;
       color: #111827;
     }
+
+    .question-container {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
   </style>
 </head>
 <body class="with-bg">
   <h1>Vitaj!</h1>
   <button id="playBtn">Play</button>
 
-  <div class="question-container">
-    <div id="questionSection" class="question hidden">
+  <div class="question-container hidden" id="questionContainer">
+    <div id="questionSection" class="question">
       <h2>Koľko zarobil za predošlý rok p. Urbaník, ak mu zo zisku odpočítame utopené náklady na tvoj noťas? Pamätaj, že p. Urbaník ho nekupoval so žiadnou zľavou.</h2>
       <div class="input-group">
         <input type="text" maxlength="1" data-index="0" />
@@ -135,13 +135,15 @@
       <div class="letters" id="lettersOutput">&nbsp;</div>
     </div>
 
-    <!-- Druhý prázdny blok -->
-    <div id="emptySection" class="question"></div>
+    <div id="emptySection" class="question">
+      <!-- Prázdny blok, môžeš sem čokoľvek pridať -->
+    </div>
   </div>
 
   <script>
     const playBtn = document.getElementById("playBtn");
     const questionSection = document.getElementById("questionSection");
+    const questionContainer = document.getElementById("questionContainer");
     const inputs = document.querySelectorAll(".input-group input[data-index]");
     const lettersOutput = document.getElementById("lettersOutput");
     const body = document.body;
@@ -173,21 +175,3 @@
 
     inputs.forEach((input, index) => {
       input.addEventListener("input", (e) => {
-        if (e.target.value.length === 1) {
-          const nextInput = document.querySelector(`.input-group input[data-index='${index + 1}']`);
-          if (nextInput) {
-            nextInput.focus();
-          }
-        }
-        updateLetters();
-      });
-    });
-
-    playBtn.addEventListener("click", () => {
-      questionSection.classList.remove("hidden");
-      playBtn.classList.add("hidden");
-      body.classList.remove("with-bg");
-    });
-  </script>
-</body>
-</html>
