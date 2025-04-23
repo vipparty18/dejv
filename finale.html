@@ -37,42 +37,6 @@
       font-weight: 400;
     }
 
-    .question {
-      margin-top: 2rem;
-      background-color: #B71C1C; /* Tmavšie červené pozadie */
-      padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 700px; /* Zvýšená šírka boxu */
-    }
-
-    .question h2 {
-      font-size: 1.6rem;
-      color: #FFEB3B; /* Zlaté písmo pre otázku */
-      margin-bottom: 1.5rem;
-    }
-
-    button {
-      padding: 1rem 2.5rem;
-      font-size: 1.1rem;
-      font-weight: 600;
-      background-color: #FFEB3B;
-      color: #D32F2F;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: background 0.3s ease, transform 0.2s ease;
-      margin-top: 2rem;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    button:hover {
-      background-color: #FF5722;
-      color: white;
-      transform: scale(1.05);
-    }
-
     .task-buttons {
       display: flex;
       justify-content: center;
@@ -120,15 +84,14 @@
 
     .input-group {
       display: flex;
-      justify-content: center;
-      gap: 1rem;
+      justify-content: space-between;
       margin-top: 1rem;
     }
 
     .input-group input {
-      width: 3rem;
+      width: 45%;
       height: 3rem;
-      font-size: 2rem;
+      font-size: 1.2rem;
       text-align: center;
       border: 2px solid #FFEB3B;
       border-radius: 8px;
@@ -138,6 +101,11 @@
 
     .input-group input:focus {
       border-color: #FF5722;
+    }
+
+    .location, .date, .time {
+      font-size: 1.2rem;
+      color: #FFEB3B;
     }
   </style>
 </head>
@@ -157,17 +125,44 @@
   <div class="input-section">
     <h2>Na svoju VIP oslavu sa dostav:</h2>
     <div class="input-group">
-      <input type="text" maxlength="1" />
-      <input type="text" maxlength="1" />
-      <input type="text" maxlength="1" />
-      <input type="text" maxlength="1" />
-      <input type="text" maxlength="1" />
-      <input type="text" maxlength="1" />
-      <input type="text" maxlength="1" />
-      <input type="text" maxlength="1" value="." />
-      <input type="text" maxlength="1" />
-      <input type="text" maxlength="1" />
+      <input type="text" id="answer1" placeholder="Úloha 1" oninput="generateDate()" />
+      <span id="date1" class="date">Dátum: </span>
+    </div>
+    <div class="input-group">
+      <input type="text" id="answer2" placeholder="Úloha 2" oninput="generateTime()" />
+      <span id="time2" class="time">Čas: </span>
+    </div>
+    <div class="input-group">
+      <input type="text" id="answer3" placeholder="Úloha 3" oninput="generateLocation()" />
+      <span id="location3" class="location">Lokalita: </span>
     </div>
   </div>
+
+  <script>
+    const locations = [
+      "Bratislava", "Košice", "Prešov", "Nitra", "Trnava",
+      "Žilina", "Trenčín", "Martin", "Poprad", "Banská Bystrica",
+      "Prievidza", "Komárno", "Humenné", "Zvolen", "Levice"
+    ];
+
+    function generateDate() {
+      const randomDate = new Date();
+      randomDate.setDate(randomDate.getDate() + Math.floor(Math.random() * 30)); // Random date within the next 30 days
+      const dateString = randomDate.toLocaleDateString();
+      document.getElementById("date1").textContent = `Dátum: ${dateString}`;
+    }
+
+    function generateTime() {
+      const randomHour = Math.floor(Math.random() * 24); // Random hour
+      const randomMinute = Math.floor(Math.random() * 60); // Random minute
+      const timeString = `${randomHour.toString().padStart(2, '0')}:${randomMinute.toString().padStart(2, '0')}`;
+      document.getElementById("time2").textContent = `Čas: ${timeString}`;
+    }
+
+    function generateLocation() {
+      const randomLocation = locations[Math.floor(Math.random() * locations.length)];
+      document.getElementById("location3").textContent = `Lokalita: ${randomLocation}`;
+    }
+  </script>
 </body>
 </html>
