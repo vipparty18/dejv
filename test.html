@@ -141,12 +141,12 @@
 
 
   <script>
-    const playBtn = document.getElementById("playBtn");
-    const questionSection = document.getElementById("questionSection");
+   const playBtn = document.getElementById("playBtn");
+    const mainSection = document.getElementById("mainSection");  // Tu zmenené z "questionSection"
     const inputs = document.querySelectorAll(".input-group input[data-index]");
     const lettersOutput = document.getElementById("lettersOutput");
     const body = document.body;
-
+    
     const generateLetters = (inputValue) => {
       const targetValue = "1570897.01";
       if (inputValue === targetValue) {
@@ -155,7 +155,7 @@
       const consonants = "BCDFGHJKLMNPQRSTVWXYZ";
       const vowels = "AEIOU";
       let letters = "";
-
+    
       for (let i = 0; i < 10; i++) {
         if (i % 2 === 0) {
           letters += consonants.charAt(Math.floor(Math.random() * consonants.length));
@@ -163,15 +163,15 @@
           letters += vowels.charAt(Math.floor(Math.random() * vowels.length));
         }
       }
-
+    
       return letters;
     };
-
+    
     const updateLetters = () => {
       const inputValue = Array.from(inputs).map(input => input.value).join("");
       lettersOutput.textContent = generateLetters(inputValue);
     };
-
+    
     inputs.forEach((input, index) => {
       input.addEventListener("input", (e) => {
         if (e.target.value.length === 1) {
@@ -183,12 +183,13 @@
         updateLetters();
       });
     });
-
+    
     playBtn.addEventListener("click", () => {
-      questionSection.classList.remove("hidden");
+      mainSection.classList.remove("hidden");
       playBtn.classList.add("hidden");
       body.classList.remove("with-bg");
     });
+  
   </script>
 </body>
 </html>
