@@ -61,18 +61,20 @@
       display: none;
     }
 
-    .container {
-      display: flex; /* Tento riadok zabezpečí, že sa obsah zobrazuje vedľa seba */
-      gap: 2rem; /* Medzera medzi sekciami */
-      margin-top: 2rem;
+    .question-container {
+      display: flex;
+      justify-content: space-between; /* Zabezpečí, že bloky budú vedľa seba */
+      width: 100%;
+      gap: 2rem;
     }
-    
-    .question, .verse-section {
+
+    .question {
+      margin-top: 2rem;
       background-color: #ffffff;
       padding: 2rem;
       border-radius: 16px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-      width: 500px; /* Šírka pre obe sekcie, aby boli rovnaké */
+      width: 48%; /* Šírka oboch blokov bude rovnaká */
     }
 
     .question h2 {
@@ -109,49 +111,15 @@
       font-weight: bold;
       color: #111827;
     }
-
-    .verse-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center; /* Zarovná text a polia na stred */
-    }
-    
-    .verse-text {
-      font-size: 1.1rem;
-      color: #111827;
-      margin-bottom: 1.5rem; /* Medzera medzi textom a inputmi */
-      text-align: center; /* Umiestnenie textu na stred */
-    }
-    
-    .verse-inputs {
-      display: flex; /* Flexbox, ktorý zabezpečí zobrazenie inputov vedľa seba */
-      gap: 1rem; /* Medzera medzi inputmi */
-    }
-    
-    .verse-inputs input {
-      width: 3rem;
-      height: 3rem;
-      font-size: 2rem;
-      text-align: center;
-      border: 2px solid #d1d5db;
-      border-radius: 8px;
-      outline: none;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    
-    .verse-inputs input:focus {
-      border-color: #4f46e5;
-    }
-
   </style>
 </head>
 <body class="with-bg">
   <h1>Vitaj!</h1>
   <button id="playBtn">Play</button>
 
-  <div class="container hidden" id="mainSection">
-    <div class="question">
-      <h2>Koľko zarobil za predošlý rok p. Urbaník, ak mu zo zisku odpočítame utopené náklady na tvoj noťas?</h2>
+  <div class="question-container">
+    <div id="questionSection" class="question hidden">
+      <h2>Koľko zarobil za predošlý rok p. Urbaník, ak mu zo zisku odpočítame utopené náklady na tvoj noťas? Pamätaj, že p. Urbaník ho nekupoval so žiadnou zľavou.</h2>
       <div class="input-group">
         <input type="text" maxlength="1" data-index="0" />
         <input type="text" maxlength="1" data-index="1" />
@@ -167,21 +135,13 @@
       <div class="letters" id="lettersOutput">&nbsp;</div>
     </div>
 
-    <div class="verse-section">
-      <div class="verse-text">
-        Oznámil som mu, že budem večne trestať jeho dom pre hriech, lebo vedel, že sa jeho synovia rúhajú, a nekarhal ich.
-      </div>
-      <div class="verse-inputs">
-        <input type="text" maxlength="1" />
-        <input type="text" maxlength="1" />
-        <input type="text" maxlength="1" />
-      </div>
-    </div>
+    <!-- Druhý prázdny blok -->
+    <div id="emptySection" class="question"></div>
   </div>
 
   <script>
     const playBtn = document.getElementById("playBtn");
-    const mainSection = document.getElementById("mainSection");
+    const questionSection = document.getElementById("questionSection");
     const inputs = document.querySelectorAll(".input-group input[data-index]");
     const lettersOutput = document.getElementById("lettersOutput");
     const body = document.body;
@@ -224,7 +184,7 @@
     });
 
     playBtn.addEventListener("click", () => {
-      mainSection.classList.remove("hidden");
+      questionSection.classList.remove("hidden");
       playBtn.classList.add("hidden");
       body.classList.remove("with-bg");
     });
