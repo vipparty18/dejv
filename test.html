@@ -119,12 +119,12 @@
     }
   </style>
 </head>
-<body class="with-bg">
+<body>
   <h1>Vitaj!</h1>
   <button id="playBtn">Play</button>
 
   <div class="question-container hidden" id="questionContainer">
-    <div id="questionSection" class="question">
+    <div id="questionSection" class="question hidden">
       <h2>Koľko zarobil za predošlý rok p. Urbaník, ak mu zo zisku odpočítame utopené náklady na tvoj noťas? Pamätaj, že p. Urbaník ho nekupoval so žiadnou zľavou.</h2>
       <div class="input-group">
         <input type="text" maxlength="1" data-index="0" />
@@ -141,14 +141,15 @@
       <div class="letters" id="lettersOutput">&nbsp;</div>
     </div>
 
-    <div id="emptySection" class="question">
-      <!-- Prázdny blok, môžeš sem čokoľvek pridať -->
+    <div id="emptySection" class="question hidden">
+      <!-- Prázdny blok -->
     </div>
   </div>
 
   <script>
     const playBtn = document.getElementById("playBtn");
     const questionSection = document.getElementById("questionSection");
+    const emptySection = document.getElementById("emptySection");
     const questionContainer = document.getElementById("questionContainer");
     const lettersOutput = document.getElementById("lettersOutput");
     const body = document.body;
@@ -180,8 +181,10 @@
 
     playBtn.addEventListener("click", () => {
       questionContainer.classList.remove("hidden");
+      questionSection.classList.remove("hidden");
+      emptySection.classList.remove("hidden");
       playBtn.classList.add("hidden");
-      body.classList.remove("with-bg");
+      body.classList.add("with-bg");
 
       const inputs = document.querySelectorAll(".input-group input[data-index]");
 
