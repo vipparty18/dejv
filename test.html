@@ -1,38 +1,233 @@
-.verse-section {
-  margin-top: 2rem;
-  background-color: #ffffff;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  width: 500px; /* Rovnaká šírka ako pre otázku */
-  display: flex;
-  flex-direction: column; /* Vertikálne usporiadanie (text nad vstupy) */
-  align-items: center; /* Zarovná text a polia na stred */
-}
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hra začína</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Source Code Pro', monospace;
+      background-color: #f4f4f5;
+      color: #1f2937;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* Vertikálne centrovanie */
+      align-items: center; /* Horizontálne centrovanie */
+      height: 100vh; /* 100% výšky obrazovky */
+      text-align: center;
+      transition: background 0.5s ease;
+    }
 
-.verse-text {
-  font-size: 1.1rem;
-  color: #111827;
-  margin-bottom: 1.5rem; /* Medzera medzi textom a inputmi */
-  text-align: center; /* Umiestnenie textu na stred */
-}
+    body.with-bg {
+      background-color: #0A042B; /* Okraje mimo fotky */
+      background-image: url('foto.jpg');
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
 
-.verse-inputs {
-  display: flex; /* Flexbox, ktorý zabezpečí zobrazenie inputov vedľa seba */
-  gap: 1rem; /* Medzera medzi inputmi */
-}
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      color: white;
+      margin: 0 0 2rem 0; /* Odstráni zbytočné okraje a pridá priestor pod h1 */
+    }
 
-.verse-inputs input {
-  width: 3rem;
-  height: 3rem;
-  font-size: 2rem;
-  text-align: center;
-  border: 2px solid #d1d5db;
-  border-radius: 8px;
-  outline: none;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+    button {
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background-color: #ffffff;
+      color: black;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
 
-.verse-inputs input:focus {
-  border-color: #4f46e5;
-}
+    button:hover {
+      background-color: #cf3e13;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .container {
+      display: flex; /* Tento riadok zabezpečí, že sa obsah zobrazuje vedľa seba */
+      gap: 2rem; /* Medzera medzi sekciami */
+      margin-top: 2rem;
+    }
+    
+    .question, .verse-section {
+      background-color: #ffffff;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      width: 500px; /* Šírka pre obe sekcie, aby boli rovnaké */
+    }
+
+    .question h2 {
+      font-size: 2rem;
+      color: #111827;
+      margin-bottom: 1rem;
+    }
+
+    .input-group {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .input-group input {
+      width: 3rem;
+      height: 3rem;
+      font-size: 2rem;
+      text-align: center;
+      border: 2px solid #d1d5db;
+      border-radius: 8px;
+      outline: none;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-group input:focus {
+      border-color: #4f46e5;
+    }
+
+    .letters {
+      margin-top: 2rem;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #111827;
+    }
+
+    .verse-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Zarovná text a polia na stred */
+    }
+    
+    .verse-text {
+      font-size: 1.1rem;
+      color: #111827;
+      margin-bottom: 1.5rem; /* Medzera medzi textom a inputmi */
+      text-align: center; /* Umiestnenie textu na stred */
+    }
+    
+    .verse-inputs {
+      display: flex; /* Flexbox, ktorý zabezpečí zobrazenie inputov vedľa seba */
+      gap: 1rem; /* Medzera medzi inputmi */
+    }
+    
+    .verse-inputs input {
+      width: 3rem;
+      height: 3rem;
+      font-size: 2rem;
+      text-align: center;
+      border: 2px solid #d1d5db;
+      border-radius: 8px;
+      outline: none;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .verse-inputs input:focus {
+      border-color: #4f46e5;
+    }
+
+  </style>
+</head>
+<body class="with-bg">
+  <h1>Vitaj!</h1>
+  <button id="playBtn">Play</button>
+
+  <div class="container hidden" id="mainSection">
+    <div class="question">
+      <h2>Koľko zarobil za predošlý rok p. Urbaník, ak mu zo zisku odpočítame utopené náklady na tvoj noťas?</h2>
+      <div class="input-group">
+        <input type="text" maxlength="1" data-index="0" />
+        <input type="text" maxlength="1" data-index="1" />
+        <input type="text" maxlength="1" data-index="2" />
+        <input type="text" maxlength="1" data-index="3" />
+        <input type="text" maxlength="1" data-index="4" />
+        <input type="text" maxlength="1" data-index="5" />
+        <input type="text" maxlength="1" data-index="6" />
+        <input type="text" maxlength="1" data-index="7" value="." />
+        <input type="text" maxlength="1" data-index="8" />
+        <input type="text" maxlength="1" data-index="9" />
+      </div>
+      <div class="letters" id="lettersOutput">&nbsp;</div>
+    </div>
+
+    <div class="verse-section">
+      <div class="verse-text">
+        Oznámil som mu, že budem večne trestať jeho dom pre hriech, lebo vedel, že sa jeho synovia rúhajú, a nekarhal ich.
+      </div>
+      <div class="verse-inputs">
+        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const playBtn = document.getElementById("playBtn");
+    const mainSection = document.getElementById("mainSection");
+    const inputs = document.querySelectorAll(".input-group input[data-index]");
+    const lettersOutput = document.getElementById("lettersOutput");
+    const body = document.body;
+
+    const generateLetters = (inputValue) => {
+      const targetValue = "1570897.01";
+      if (inputValue === targetValue) {
+        return "BEGINSHERE";
+      }
+      const consonants = "BCDFGHJKLMNPQRSTVWXYZ";
+      const vowels = "AEIOU";
+      let letters = "";
+
+      for (let i = 0; i < 10; i++) {
+        if (i % 2 === 0) {
+          letters += consonants.charAt(Math.floor(Math.random() * consonants.length));
+        } else {
+          letters += vowels.charAt(Math.floor(Math.random() * vowels.length));
+        }
+      }
+
+      return letters;
+    };
+
+    const updateLetters = () => {
+      const inputValue = Array.from(inputs).map(input => input.value).join("");
+      lettersOutput.textContent = generateLetters(inputValue);
+    };
+
+    inputs.forEach((input, index) => {
+      input.addEventListener("input", (e) => {
+        if (e.target.value.length === 1) {
+          const nextInput = document.querySelector(`.input-group input[data-index='${index + 1}']`);
+          if (nextInput) {
+            nextInput.focus();
+          }
+        }
+        updateLetters();
+      });
+    });
+
+    playBtn.addEventListener("click", () => {
+      mainSection.classList.remove("hidden");
+      playBtn.classList.add("hidden");
+      body.classList.remove("with-bg");
+    });
+  </script>
+</body>
+</html>
