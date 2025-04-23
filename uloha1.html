@@ -25,7 +25,7 @@
       font-weight: 700;
       color: #FFEB3B;
       margin: 0 0 1.5rem 0;
-      padding: 10rem 0rem 0rem 0rem;
+      padding: 15rem 0rem 3rem 0rem;
     }
 
     .wrapper {
@@ -60,6 +60,7 @@
       gap: 1rem;
       margin-top: 1rem;
       flex-wrap: wrap;
+      align-items: center;
     }
 
     .input-group input {
@@ -75,6 +76,11 @@
 
     .input-group input:focus {
       border-color: #FF5722;
+    }
+
+    .comma {
+      font-size: 2rem;
+      color: #FFEB3B;
     }
 
     .letters {
@@ -109,8 +115,13 @@
 
     <!-- DRUHÝ BOX -->
     <div class="question">
-      <h2>Sem môžeš pridať ďalšiu úlohu alebo interaktívny prvok 🎯</h2>
-      <p style="color: #FFCDD2; font-size: 1rem; margin-top: 1.5rem;">Zatiaľ je tento box prázdny, ale môžeš doň pridať čokoľvek – ďalšiu otázku, hádanku, formulár, čo len chceš!</p>
+      <h2>"For I told him that I would judge his family forever because of the sin he knew about; his sons blasphemed God, and he failed to restrain them"</h2>
+      <div class="input-group">
+        <input type="text" maxlength="1" />
+        <span class="comma">,</span>
+        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" />
+      </div>
     </div>
   </div>
 
@@ -123,7 +134,7 @@
       if (inputValue === targetValue) {
         return "BEGINSHERE";
       }
-      const consonants = "BCDFGHJKLMNPQRSTVWXYZ";
+      const consonants = "BCDFGHJKLMNPRSTVZ";
       const vowels = "AEIOU";
       let letters = "";
 
