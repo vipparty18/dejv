@@ -23,8 +23,9 @@
     }
 
     body.with-bg {
-      background: url('foto.jpg') center/cover no-repeat;
+      background: url('foto.jpg') center/contain no-repeat;
     }
+
 
     h1 {
       font-size: 3rem;
@@ -132,7 +133,7 @@
       if (inputValue === targetValue) {
         return "BEGINSHERE";
       }
-      const consonants = "BCDFGHJKLMNPRSTVZ";
+      const consonants = "BCDFGHJKLMNPQRSTVWXYZ";
       const vowels = "AEIOU";
       let letters = "";
 
