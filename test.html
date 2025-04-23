@@ -4,7 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Hra začína</title>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Source Code Pro', monospace;
@@ -12,15 +14,17 @@
       color: #1f2937;
       margin: 0;
       padding: 2rem;
-      height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      justify-content: center; /* Vertikálne centrovanie */
+      align-items: center; /* Horizontálne centrovanie */
+      height: 100vh; /* 100% výšky obrazovky */
+      text-align: center;
+      transition: background 0.5s ease;
     }
 
     body.with-bg {
-      background-color: #0A042B;
+      background-color: #0A042B; /* Okraje mimo fotky */
       background-image: url('foto.jpg');
       background-position: center;
       background-size: contain;
@@ -31,7 +35,7 @@
       font-size: 3rem;
       font-weight: 700;
       color: white;
-      margin-bottom: 2rem;
+      margin: 0 0 2rem 0; /* Odstráni zbytočné okraje a pridá priestor pod h1 */
     }
 
     button {
@@ -43,6 +47,7 @@
       border: none;
       border-radius: 12px;
       cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
@@ -56,30 +61,24 @@
       display: none;
     }
 
-    .container {
-      display: flex;
-      gap: 3rem;
+    .question {
       margin-top: 2rem;
-    }
-
-    .question, .verse-section {
       background-color: #ffffff;
       padding: 2rem;
       border-radius: 16px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-      width: 500px;
     }
 
     .question h2 {
-      font-size: 1.5rem;
+      font-size: 2rem;
+      color: #111827;
       margin-bottom: 1rem;
     }
 
     .input-group {
       display: flex;
       justify-content: center;
-      flex-wrap: wrap;
-      gap: 0.5rem;
+      gap: 1rem;
       margin-top: 1rem;
     }
 
@@ -91,6 +90,7 @@
       border: 2px solid #d1d5db;
       border-radius: 8px;
       outline: none;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .input-group input:focus {
@@ -101,70 +101,48 @@
       margin-top: 2rem;
       font-size: 2rem;
       font-weight: bold;
-    }
-
-    .verse-text {
-      font-size: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .verse-inputs {
-      display: flex;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-
-    .verse-inputs input {
-      width: 3rem;
-      height: 3rem;
-      font-size: 2rem;
-      text-align: center;
-      border: 2px solid #d1d5db;
-      border-radius: 8px;
-    }
-
-    .verse-inputs input:first-child {
-      margin-right: 2rem;
+      color: #111827;
     }
   </style>
 </head>
-<body>
+<body class="with-bg">
   <h1>Vitaj!</h1>
   <button id="playBtn">Play</button>
 
   <div class="container hidden" id="mainSection">
-    <div class="question">
-      <h2>Koľko zarobil za predošlý rok p. Urbaník, ak mu zo zisku odpočítame utopené náklady na tvoj noťas?</h2>
-      <div class="input-group">
-        <input type="text" maxlength="1" data-index="0" />
-        <input type="text" maxlength="1" data-index="1" />
-        <input type="text" maxlength="1" data-index="2" />
-        <input type="text" maxlength="1" data-index="3" />
-        <input type="text" maxlength="1" data-index="4" />
-        <input type="text" maxlength="1" data-index="5" />
-        <input type="text" maxlength="1" data-index="6" />
-        <input type="text" maxlength="1" data-index="7" value="." />
-        <input type="text" maxlength="1" data-index="8" />
-        <input type="text" maxlength="1" data-index="9" />
-      </div>
-      <div class="letters" id="lettersOutput">&nbsp;</div>
+  <div class="question">
+    <h2>Koľko zarobil za predošlý rok p. Urbaník, ak mu zo zisku odpočítame utopené náklady na tvoj noťas?</h2>
+    <div class="input-group">
+      <input type="text" maxlength="1" data-index="0" />
+      <input type="text" maxlength="1" data-index="1" />
+      <input type="text" maxlength="1" data-index="2" />
+      <input type="text" maxlength="1" data-index="3" />
+      <input type="text" maxlength="1" data-index="4" />
+      <input type="text" maxlength="1" data-index="5" />
+      <input type="text" maxlength="1" data-index="6" />
+      <input type="text" maxlength="1" data-index="7" value="." />
+      <input type="text" maxlength="1" data-index="8" />
+      <input type="text" maxlength="1" data-index="9" />
     </div>
+    <div class="letters" id="lettersOutput">&nbsp;</div>
+  </div>
 
-    <div class="verse-section">
-      <div class="verse-text">
-        Oznámil som mu, že budem večne trestať jeho dom pre hriech, lebo vedel, že sa jeho synovia rúhajú, a nekarhal ich.
-      </div>
-      <div class="verse-inputs">
-        <input type="text" maxlength="1" />
-        <input type="text" maxlength="1" />
-        <input type="text" maxlength="1" />
-      </div>
+  <div class="verse-section">
+    <div class="verse-text">
+      Oznámil som mu, že budem večne trestať jeho dom pre hriech, lebo vedel, že sa jeho synovia rúhajú, a nekarhal ich.
+    </div>
+    <div class="verse-inputs">
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" />
     </div>
   </div>
+</div>
+
 
   <script>
     const playBtn = document.getElementById("playBtn");
-    const mainSection = document.getElementById("mainSection");
+    const questionSection = document.getElementById("questionSection");
     const inputs = document.querySelectorAll(".input-group input[data-index]");
     const lettersOutput = document.getElementById("lettersOutput");
     const body = document.body;
@@ -177,11 +155,15 @@
       const consonants = "BCDFGHJKLMNPQRSTVWXYZ";
       const vowels = "AEIOU";
       let letters = "";
+
       for (let i = 0; i < 10; i++) {
-        letters += i % 2 === 0
-          ? consonants.charAt(Math.floor(Math.random() * consonants.length))
-          : vowels.charAt(Math.floor(Math.random() * vowels.length));
+        if (i % 2 === 0) {
+          letters += consonants.charAt(Math.floor(Math.random() * consonants.length));
+        } else {
+          letters += vowels.charAt(Math.floor(Math.random() * vowels.length));
+        }
       }
+
       return letters;
     };
 
@@ -194,18 +176,18 @@
       input.addEventListener("input", (e) => {
         if (e.target.value.length === 1) {
           const nextInput = document.querySelector(`.input-group input[data-index='${index + 1}']`);
-          if (nextInput) nextInput.focus();
+          if (nextInput) {
+            nextInput.focus();
+          }
         }
         updateLetters();
       });
     });
 
     playBtn.addEventListener("click", () => {
-      mainSection.classList.remove("hidden");
+      questionSection.classList.remove("hidden");
       playBtn.classList.add("hidden");
       body.classList.remove("with-bg");
-      body.style.backgroundColor = '#f4f4f5';
-      body.style.backgroundImage = 'none';
     });
   </script>
 </body>
