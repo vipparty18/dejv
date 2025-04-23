@@ -61,12 +61,18 @@
       display: none;
     }
 
-    .question {
+    .container {
+      display: flex; /* Tento riadok zabezpečí, že sa obsah zobrazuje vedľa seba */
+      gap: 2rem; /* Medzera medzi sekciami */
       margin-top: 2rem;
+    }
+    
+    .question, .verse-section {
       background-color: #ffffff;
       padding: 2rem;
       border-radius: 16px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      width: 500px; /* Šírka pre obe sekcie, aby boli rovnaké */
     }
 
     .question h2 {
@@ -105,14 +111,8 @@
     }
 
     .verse-section {
-      margin-top: 2rem;
-      background-color: #ffffff;
-      padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-      width: 500px; /* Rovnaká šírka ako pre otázku */
       display: flex;
-      flex-direction: column; /* Vertikálne usporiadanie (text nad vstupy) */
+      flex-direction: column;
       align-items: center; /* Zarovná text a polia na stred */
     }
     
