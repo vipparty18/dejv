@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hra pokračuje</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Source Code Pro', monospace;
+      color: #1f2937;
+      background-color: #f4f4f5;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      color: white;
+      margin: 0 0 2rem 0;
+    }
+
+    .question {
+      margin-top: 2rem;
+      background-color: #ffffff;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .question h2 {
+      font-size: 2rem;
+      color: #111827;
+      margin-bottom: 1rem;
+    }
+
+    .input-group {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .input-group input {
+      width: 3rem;
+      height: 3rem;
+      font-size: 2rem;
+      text-align: center;
+      border: 2px solid #d1d5db;
+      border-radius: 8px;
+      outline: none;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-group input:focus {
+      border-color: #4f46e5;
+    }
+
+    .letters {
+      margin-top: 2rem;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #111827;
+    }
+  </style>
+</head>
+<body>
+  <h1>Hra pokračuje!</h1>
+
+  <div class="question">
+    <h2>Koľko zarobil za predošlý rok p. Urbaník, ak mu zo zisku odpočítame utopené náklady na tvoj noťas? Pamätaj, že p. Urbaník ho nekupoval so žiadnou zľavou.</h2>
+    <div class="input-group">
+      <input type="text" maxlength="1" data-index="0" />
+      <input type="text" maxlength="1" data-index="1" />
+      <input type="text" maxlength="1" data-index="2" />
+      <input type="text" maxlength="1" data-index="3" />
+      <input type="text" maxlength="1" data-index="4" />
+      <input type="text" maxlength="1" data-index="5" />
+      <input type="text" maxlength="1" data-index="6" />
+      <input type="text" maxlength="1" data-index="7" value="." />
+      <input type="text" maxlength="1" data-index="8" />
+      <input type="text" maxlength="1" data-index="9" />
+    </div>
+    <div class="letters" id="lettersOutput">&nbsp;</div>
+  </div>
+
+  <script>
+    const inputs = document.querySelectorAll(".input-group input[data-index]");
+    const lettersOutput = document.getElementById("lettersOutput");
+
+    const generateLetters = (inputValue) => {
+      const targetValue = "1570897.01";
+      if (inputValue === targetValue) {
+        return "BEGINSHERE";
+      }
+      const consonants = "BCDFGHJKLMNPQRSTVWXYZ";
+      const vowels = "AEIOU";
+      let letters = "";
+
+      for (let i = 0; i < 10; i++) {
+        if (i % 2 === 0) {
+          letters += consonants.charAt(Math.floor(Math.random() * consonants.length));
+        } else {
+          letters += vowels.charAt(Math.floor(Math.random() * vowels.length));
+        }
+      }
+
+      return letters;
+    };
+
+    const updateLetters = () => {
+      const inputValue = Array.from(inputs).map(input => input.value).join("");
+      lettersOutput.textContent = generateLetters(inputValue);
+    };
+
+    inputs.forEach((input, index) => {
+      input.addEventListener("input", (e) => {
+        if (e.target.value.length === 1) {
+          const nextInput = document.querySelector(`.input-group input[data-index='${index + 1}']`);
+          if (nextInput) {
+            nextInput.focus();
+          }
+        }
+        updateLetters();
+      });
+    });
+  </script>
+</body>
+</html>
