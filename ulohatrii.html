@@ -27,13 +27,23 @@
     }
 
     .content {
-      font-size: 1.5rem;
       color: #FFEB3B;
     }
 
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .row span {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+
     img {
-      margin-top: 1rem;
-      max-width: 100%;
+      width: 150px;
       height: auto;
       border-radius: 10px;
       box-shadow: 0 10px 20px rgba(0,0,0,0.3);
@@ -43,8 +53,10 @@
 <body>
   <h1>Úloha č. 3</h1>
   <div class="content">
-    12 - <br>
-    <img src="macka.jpeg" alt="mačka">
+    <div class="row">
+      <span>12 -</span>
+      <img src="macka.jpeg" alt="mačka">
+    </div>
   </div>
 </body>
 </html>
