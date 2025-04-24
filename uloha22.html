@@ -63,6 +63,13 @@
       color: #000000;
       box-sizing: border-box;
     }
+
+    .result {
+      margin-top: 1rem;
+      font-size: 1.5rem;
+      color: #FFEB3B;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -71,8 +78,22 @@
   <div class="wrapper">
     <div class="question">
       <h2>Kto sa sťažuje na plešatú hlavu?</h2>
-      <input type="text" class="input-box">
+      <input type="text" class="input-box" id="answerBox">
+      <div class="result" id="result">12</div>
     </div>
   </div>
+
+  <script>
+    const input = document.getElementById('answerBox');
+    const result = document.getElementById('result');
+
+    input.addEventListener('input', () => {
+      if (input.value.trim().toLowerCase() === 'gale boetticher'.toLowerCase()) {
+        result.style.display = 'block';
+      } else {
+        result.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>
