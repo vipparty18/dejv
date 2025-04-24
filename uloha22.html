@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Úloha 3</title>
+  <title>Úloha 2</title>
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
   <style>
     body {
@@ -35,84 +35,63 @@
       width: 100%;
     }
 
-    .row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-    }
-
-    .row span {
-      font-size: 3rem;
-      font-weight: bold;
-    }
-
-    .row img {
-      width: 200px;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-    }
-
-    .question-box {
-      background-color: #B71C1C; /* Darker red */
+    .question {
+      background-color: #B71C1C;
       padding: 2rem;
       border-radius: 20px;
       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
       max-width: 650px;
       width: 100%;
       box-sizing: border-box;
-      margin-top: 3rem;
     }
 
-    .question-box .question {
+    .question h2 {
       font-size: 1.5rem;
       color: #FFEB3B;
       margin-bottom: 1rem;
     }
 
-    .input-group {
-      margin-top: 1rem;
-    }
-
     .input-box {
+      width: 100%;
+      max-width: 400px;
+      margin-top: 1rem;
       padding: 0.75rem;
       font-size: 1.2rem;
       border: 2px solid #FFEB3B;
-      border-radius: 10px;
+      border-radius: 20px;
       background-color: #FFFFFF;
       color: #000000;
       box-sizing: border-box;
-      width: 250px;
+    }
+
+    .result {
+      margin-top: 1rem;
+      font-size: 1.5rem;
+      color: #FFEB3B;
+      display: none;
     }
   </style>
 </head>
 <body>
-  <h1>Úloha č. 3</h1>
+  <h1>Úloha č.2</h1>
 
   <div class="wrapper">
-    <!-- Číslo 12 a mačka nad otázkou -->
-    <div class="row">
-      <span>12 -</span>
-      <img src="macka.jpeg" alt="mačka">
-    </div>
-
-    <!-- Červený box s otázkou a textovým poľom -->
-    <div class="question-box">
-      <div class="question">
-        Na tomto mieste sa nachádza veľmi špecifický, odborný termín pre neporaziteľných superhrdinov.<br>Aký termín to je?
-      </div>
-      <div class="input-group">
-        <input type="text" class="input-box" id="answer">
-      </div>
+    <div class="question">
+      <h2>Kto sa sťažuje na plešatú hlavu?</h2>
+      <input type="text" class="input-box" id="answerBox">
+      <div class="result" id="result">12</div>
     </div>
   </div>
 
   <script>
-    document.getElementById('answer').addEventListener('input', function() {
-      var answer = this.value.trim().toLowerCase();
-      if (answer === 'deus in machina') {
-        window.open('ctvrtek.html', '_blank');
+    const input = document.getElementById('answerBox');
+    const result = document.getElementById('result');
+
+    input.addEventListener('input', () => {
+      if (input.value.trim().toLowerCase() === 'gale boetticher'.toLowerCase()) {
+        result.style.display = 'block';
+      } else {
+        result.style.display = 'none';
       }
     });
   </script>
