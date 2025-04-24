@@ -44,11 +44,6 @@
       margin-top: 2rem;
     }
 
-    .task-buttons a {
-      text-decoration: none;
-      color: white;
-    }
-
     .task-buttons button {
       padding: 1rem 2rem;
       background-color: #FF5722;
@@ -107,6 +102,28 @@
       font-size: 1.2rem;
       color: #FFEB3B;
     }
+
+    .redirect-input {
+      display: none; /* Hidden by default */
+      margin-top: 1rem;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .redirect-input input {
+      width: 100%;
+      height: 3rem;
+      font-size: 1.2rem;
+      text-align: center;
+      border: 2px solid #FFEB3B;
+      border-radius: 8px;
+      outline: none;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .redirect-input input:focus {
+      border-color: #FF5722;
+    }
   </style>
 </head>
 <body>
@@ -118,8 +135,12 @@
 
   <div class="task-buttons">
     <a href="uloha1.html"><button>Úloha 1</button></a>
-    <a href="uloha2.html"><button>Úloha 2</button></a>
-    <a href="uloha3.html"><button>Úloha 3</button></a>
+    <button id="showRedirectInputButton">Úloha 2</button>
+    <button id="showRedirectInputButton3">Úloha 3</button>
+  </div>
+
+  <div class="redirect-input">
+    <input type="text" id="redirectInput" placeholder="Zadaj heslo a stlač Enter" />
   </div>
 
   <div class="input-section">
@@ -163,6 +184,27 @@
       const randomLocation = locations[Math.floor(Math.random() * locations.length)];
       document.getElementById("location3").textContent = `Lokalita: ${randomLocation}`;
     }
+
+    // Show the input field when the "Úloha 2" button is clicked
+    document.getElementById("showRedirectInputButton").addEventListener("click", function() {
+      document.querySelector(".redirect-input").style.display = "block";
+    });
+
+    // Show the input field when the "Úloha 3" button is clicked
+    document.getElementById("showRedirectInputButton3").addEventListener("click", function() {
+      document.querySelector(".redirect-input").style.display = "block";
+    });
+
+    document.getElementById("redirectInput").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        const value = event.target.value.trim();
+        if (value.toLowerCase() === "heisenberg313") {
+          window.open("uloha22.html", "_blank");
+        } else if (value.toLowerCase() === "tester") {
+          window.open("ulohatrii.html", "_blank");
+        }
+      }
+    });
   </script>
 </body>
 </html>
