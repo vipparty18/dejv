@@ -26,37 +26,95 @@
       padding: 7rem 0 3rem;
     }
 
-    .content {
-      color: #FFEB3B;
+    .wrapper {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      max-width: 1200px;
+      width: 100%;
     }
 
     .row {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 2rem;
+      gap: 1rem;
     }
 
     .row span {
-      font-size: 5rem;
+      font-size: 3rem;
       font-weight: bold;
     }
 
-    img {
-      width: 300px;
+    .row img {
+      width: 200px;
       height: auto;
       border-radius: 10px;
       box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    .question-box {
+      background-color: #B71C1C; /* Darker red */
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      max-width: 650px;
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 3rem;
+    }
+
+    .question-box .question {
+      font-size: 1.5rem;
+      color: #FFEB3B;
+      margin-bottom: 1rem;
+    }
+
+    .input-group {
+      margin-top: 1rem;
+    }
+
+    .input-box {
+      padding: 0.75rem;
+      font-size: 1.2rem;
+      border: 2px solid #FFEB3B;
+      border-radius: 10px;
+      background-color: #FFFFFF;
+      color: #000000;
+      box-sizing: border-box;
+      width: 250px;
     }
   </style>
 </head>
 <body>
   <h1>Úloha č. 3</h1>
-  <div class="content">
+
+  <div class="wrapper">
+    <!-- Číslo 12 a mačka nad otázkou -->
     <div class="row">
       <span>12 -</span>
       <img src="macka.jpeg" alt="mačka">
     </div>
+
+    <!-- Červený box s otázkou a textovým poľom -->
+    <div class="question-box">
+      <div class="question">
+        Na tomto mieste sa nachádza veľmi špecifický, odborný termín pre neporaziteľných superhrdinov.<br>Aký termín to je?
+      </div>
+      <div class="input-group">
+        <input type="text" class="input-box" id="answer">
+      </div>
+    </div>
   </div>
+
+  <script>
+    document.getElementById('answer').addEventListener('input', function() {
+      var answer = this.value.trim().toLowerCase();
+      if (answer === 'deus in machina') {
+        window.open('ctvrtek.html', '_blank');
+      }
+    });
+  </script>
 </body>
 </html>
