@@ -130,7 +130,7 @@
   <h1>GRAND FINALE!</h1>
   <div class="instructions">
     <p>Vitaj na záverečnom kole našich úloh! Tvoja úloha je jednoduchá: splň každú zadanú úlohu, zadaj správne odpovede a priprav sa na prekvapenie, ktoré ťa čaká!</p>
-    <p>Rýchlo klikaj na tlačidlá nižšie a začni svoje dobrodružstvo!</p>
+    <p>Vyrieš všetky úlohy a zistíš, kde ťa čaká oslava!</p>
   </div>
 
   <div class="task-buttons">
@@ -159,7 +159,7 @@
     </div>
     <div class="input-group">
       <input type="text" id="answer4" placeholder="Úloha 4" oninput="checkCaproni()" />
-      <span id="info4" class="location">Zadaj kód pre VIP vstup</span>
+      <span id="info4" class="location">?</span>
     </div>
   </div>
 
@@ -213,7 +213,8 @@
       if (input === "caproni ca-33") {
         document.getElementById("date1").textContent = "Dátum: 3. 5. 2025";
         document.getElementById("time2").textContent = "Čas: 15:30";
-        document.getElementById("location3").textContent = "Lokalita: Letisko M.R. Štefánika - Apron bar";
+        document.getElementById("location3").textContent = "Lokalita: Letisko M.R. Štefánika";
+        document.getElementById("info4").textContent = "Apron bar";
       }
     }
   </script>
