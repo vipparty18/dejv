@@ -209,14 +209,24 @@
     });
 
     function checkCaproni() {
-      const input = document.getElementById("answer4").value.trim().toLowerCase();
-      if (input === "caproni ca-33") {
-        document.getElementById("date1").textContent = "Dátum: 3. 5. 2025";
-        document.getElementById("time2").textContent = "Čas: 15:30";
-        document.getElementById("location3").textContent = "Lokalita: Letisko M.R. Štefánika";
-        document.getElementById("info4").textContent = "Apron bar";
-      }
+        const input1 = document.getElementById("answer1").value.trim().toLowerCase();
+        const input2 = document.getElementById("answer2").value.trim();
+        const input3 = document.getElementById("answer3").value.trim().toLowerCase();
+        const input4 = document.getElementById("answer4").value.trim().toLowerCase();
+    
+        if (
+            input1 === "heisenberg313" &&
+            input2 === "12" &&
+            input3 === "deus in machina" &&
+            input4 === "caproni ca-33"
+        ) {
+            document.getElementById("date1").textContent = "Dátum: 3. 5. 2025";
+            document.getElementById("time2").textContent = "Čas: 15:30";
+            document.getElementById("location3").textContent = "Lokalita: Letisko M.R. Štefánika";
+            document.getElementById("info4").textContent = "Apron bar";
+        }
     }
+
   </script>
 </body>
 </html>
