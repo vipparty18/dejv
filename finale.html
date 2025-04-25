@@ -10,7 +10,7 @@
   <style>
     body {
       font-family: 'Source Code Pro', monospace;
-      background-color: #D32F2F; /* Červená pozadie pre víťazný efekt */
+      background-color: #D32F2F;
       color: white;
       margin: 0;
       padding: 2rem;
@@ -26,7 +26,7 @@
       font-size: 3rem;
       font-weight: 700;
       margin: 0 0 2rem 0;
-      color: #FFEB3B; /* Zlatá farba pre zvýraznenie */
+      color: #FFEB3B;
     }
 
     .instructions {
@@ -65,7 +65,7 @@
       margin-top: 4rem;
       width: 100%;
       max-width: 700px;
-      background-color: #B71C1C; /* Tmavšie červené pozadie */
+      background-color: #B71C1C;
       padding: 2rem;
       border-radius: 16px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
@@ -104,7 +104,7 @@
     }
 
     .redirect-input {
-      display: none; /* Hidden by default */
+      display: none;
       margin-top: 1rem;
       width: 100%;
       max-width: 300px;
@@ -157,25 +157,25 @@
       <input type="text" id="answer3" placeholder="Úloha 3" oninput="generateLocation()" />
       <span id="location3" class="location">Lokalita: </span>
     </div>
+    <div class="input-group">
+      <input type="text" id="answer4" placeholder="Úloha 4" oninput="checkCaproni()" />
+      <span id="info4" class="location">Zadaj kód pre VIP vstup</span>
+    </div>
   </div>
 
   <script>
-    const locations = [
-      "Bratislava", "Košice", "Prešov", "Nitra", "Trnava",
-      "Žilina", "Trenčín", "Martin", "Poprad", "Banská Bystrica",
-      "Prievidza", "Komárno", "Humenné", "Zvolen", "Levice"
-    ];
+    const locations = ["Bratislava", "Košice", "Prešov", "Nitra", "Trnava", "Žilina", "Trenčín", "Martin", "Poprad", "Banská Bystrica", "Prievidza", "Komárno", "Humenné", "Zvolen", "Levice"];
 
     function generateDate() {
       const randomDate = new Date();
-      randomDate.setDate(randomDate.getDate() + Math.floor(Math.random() * 30)); // Random date within the next 30 days
+      randomDate.setDate(randomDate.getDate() + Math.floor(Math.random() * 30));
       const dateString = randomDate.toLocaleDateString();
       document.getElementById("date1").textContent = `Dátum: ${dateString}`;
     }
 
     function generateTime() {
-      const randomHour = Math.floor(Math.random() * 24); // Random hour
-      const randomMinute = Math.floor(Math.random() * 60); // Random minute
+      const randomHour = Math.floor(Math.random() * 24);
+      const randomMinute = Math.floor(Math.random() * 60);
       const timeString = `${randomHour.toString().padStart(2, '0')}:${randomMinute.toString().padStart(2, '0')}`;
       document.getElementById("time2").textContent = `Čas: ${timeString}`;
     }
@@ -185,12 +185,10 @@
       document.getElementById("location3").textContent = `Lokalita: ${randomLocation}`;
     }
 
-    // Show the input field when the "Úloha 2" button is clicked
     document.getElementById("showRedirectInputButton").addEventListener("click", function() {
       document.querySelector(".redirect-input").style.display = "block";
     });
 
-    // Show the input field when the "Úloha 3" button is clicked
     document.getElementById("showRedirectInputButton3").addEventListener("click", function() {
       document.querySelector(".redirect-input").style.display = "block";
     });
@@ -199,10 +197,7 @@
       if (event.key === "Enter") {
         const value = event.target.value.trim();
         if (value.toLowerCase() === "heisenberg313") {
-          // Open new window
           window.open("uloha22.html", "_blank");
-
-          // Trigger image download
           const link = document.createElement("a");
           link.href = "heisenberg.png";
           link.download = "heisenberg.png";
@@ -212,6 +207,15 @@
         }
       }
     });
+
+    function checkCaproni() {
+      const input = document.getElementById("answer4").value.trim().toLowerCase();
+      if (input === "caproni ca-33") {
+        document.getElementById("date1").textContent = "Dátum: 3. 5. 2025";
+        document.getElementById("time2").textContent = "Čas: 15:30";
+        document.getElementById("location3").textContent = "Lokalita: Letisko M.R. Štefánika - Apron bar";
+      }
+    }
   </script>
 </body>
 </html>
