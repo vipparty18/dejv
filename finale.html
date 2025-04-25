@@ -209,59 +209,54 @@
     });
 
     function checkCaproni() {
-        const input1 = document.getElementById("answer1").value.trim().toLowerCase();
-        const input2 = document.getElementById("answer2").value.trim();
-        const input3 = document.getElementById("answer3").value.trim().toLowerCase();
-        const input4 = document.getElementById("answer4").value.trim().toLowerCase();
-        
-        if (
-            input1 === "heisenberg313" &&
-            input2 === "12" &&
-            input3 === "deus in machina" &&
-            input4 === "caproni ca-33"
-        ) {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, "0");
-            const minutes = String(now.getMinutes()).padStart(2, "0");
-            const formattedTime = `${hours}:${minutes}`;
+          const input1 = document.getElementById("answer1").value.trim().toLowerCase();
+          const input2 = document.getElementById("answer2").value.trim();
+          const input3 = document.getElementById("answer3").value.trim().toLowerCase();
+          const input4 = document.getElementById("answer4").value.trim().toLowerCase();
+          
+          if (
+              input1 === "heisenberg313" &&
+              input2 === "12" &&
+              input3 === "deus in machina" &&
+              input4 === "caproni ca-33"
+          ) {
+              const now = new Date();
+              const hours = String(now.getHours()).padStart(2, "0");
+              const minutes = String(now.getMinutes()).padStart(2, "0");
+              const formattedTime = `${hours}:${minutes}`;
+              
+              const gmtPlus1Date = new Date(now.getTime() + 1 * 60 * 60 * 1000); // GMT+1 adjustment
+              document.getElementById("date1").textContent = `Dátum: ${gmtPlus1Date.toLocaleDateString()}`;
+              document.getElementById("time2").textContent = `Čas: ${formattedTime}`;
+              document.getElementById("location3").textContent = "Lokalita: Letisko M.R. Štefánika";
+              document.getElementById("info4").textContent = "Apron bar";
+          } else {
+              // Generate random date, time, and location if the condition is false
+              generateRandomDate();
+              generateRandomTime();
+              generateRandomLocation();
+              document.getElementById("info4").textContent = "";  // Clear info for the wrong answers
           }
-    
-            document.getElementById("date1").textContent = `Dátum: ${gmtPlus1Date.toLocaleDateString()}`;
-            document.getElementById("time2").textContent = `Čas: ${formattedTime}`;
-            document.getElementById("location3").textContent = "Lokalita: Letisko M.R. Štefánika";
-            document.getElementById("info4").textContent = "Apron bar";
-        } else {
-            generateRandomDate();
-            generateRandomTime();
-            generateRandomLocation();
-            document.getElementById("info4").textContent = "";
-        }
-    }
-    
-    function generateRandomDate() {
-        const randomDate = new Date();
-        randomDate.setDate(randomDate.getDate() + Math.floor(Math.random() * 30)); // Random day within the next 30 days
-        const dateString = randomDate.toLocaleDateString();
-        document.getElementById("date1").textContent = `Dátum: ${dateString}`;
-    }
-    
-    function generateRandomTime() {
-        const randomHour = Math.floor(Math.random() * 24);
-        const randomMinute = Math.floor(Math.random() * 60);
-        const timeString = `${randomHour.toString().padStart(2, '0')}:${randomMinute.toString().padStart(2, '0')}`;
-        document.getElementById("time2").textContent = `Čas: ${timeString}`;
-    }
-    
-    function generateRandomLocation() {
-        const locations = [
-            "Bratislava", "Košice", "Prešov", "Nitra", "Trnava",
-            "Žilina", "Trenčín", "Martin", "Poprad", "Banská Bystrica",
-            "Prievidza", "Komárno", "Humenné", "Zvolen", "Levice"
-        ];
-        const randomLocation = locations[Math.floor(Math.random() * locations.length)];
-        document.getElementById("location3").textContent = `Lokalita: ${randomLocation}`;
-    }
-
+      }
+      
+      function generateRandomDate() {
+          const randomDate = new Date();
+          randomDate.setDate(randomDate.getDate() + Math.floor(Math.random() * 30)); // Random day within the next 30 days
+          const dateString = randomDate.toLocaleDateString();
+          document.getElementById("date1").textContent = `Dátum: ${dateString}`;
+      }
+      
+      function generateRandomTime() {
+          const randomHour = Math.floor(Math.random() * 24);
+          const randomMinute = Math.floor(Math.random() * 60);
+          const timeString = `${randomHour.toString().padStart(2, '0')}:${randomMinute.toString().padStart(2, '0')}`;
+          document.getElementById("time2").textContent = `Čas: ${timeString}`;
+      }
+      
+      function generateRandomLocation() {
+          const randomLocation = locations[Math.floor(Math.random() * locations.length)];
+          document.getElementById("location3").textContent = `Lokalita: ${randomLocation}`;
+      }
 
   </script>
 </body>
