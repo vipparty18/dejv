@@ -25,9 +25,63 @@
       margin: 0;
       padding: 7rem 0;
     }
+
+    .image-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    .image-container img {
+      max-width: 600px;
+      width: 100%;
+      height: auto;
+    }
+
+    .input-box {
+      margin-top: 2rem;
+      padding: 0.75rem;
+      font-size: 1.2rem;
+      border: 2px solid #FFEB3B;
+      border-radius: 20px;
+      background-color: #FFFFFF;
+      color: #000000;
+      width: 100%;
+      max-width: 400px;
+      box-sizing: border-box;
+    }
+
+    .hint {
+      margin-top: 1rem;
+      font-size: 1.5rem;
+      color: #FFEB3B;
+      display: none;
+    }
   </style>
 </head>
 <body>
   <h1>Posledná úloha</h1>
+
+  <div class="image-container">
+    <img src="kod.png" alt="Obrázok kódu">
+  </div>
+
+  <input type="text" class="input-box" id="codeInput" placeholder="Sem napíš kód">
+
+  <div class="hint" id="hint">You're Goddamn right. Štvrté heslo je model vozidla, ktoré niekomu slúžilo ako posledné. Zisti, o koho ide a aký je názov modelu. Priezvisko ťa nasmeruje.</div>
+
+  <script>
+    const input = document.getElementById('codeInput');
+    const hint = document.getElementById('hint');
+
+    input.addEventListener('input', () => {
+      const userInput = input.value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      if (userInput === 'jeho posledne vozidlo') {
+        hint.style.display = 'block';
+      } else {
+        hint.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>
