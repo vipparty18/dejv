@@ -146,15 +146,15 @@
   <div class="input-section">
     <h2>Na svoju VIP oslavu sa dostav:</h2>
     <div class="input-group">
-      <input type="text" id="answer1" placeholder="Úloha 1" oninput="generateDate()" />
+      <input type="text" id="answer1" placeholder="Úloha 1" oninput="generateDate() oninput="checkCaproni()"" />
       <span id="date1" class="date">Dátum: </span>
     </div>
     <div class="input-group">
-      <input type="text" id="answer2" placeholder="Úloha 2" oninput="generateTime()" />
+      <input type="text" id="answer2" placeholder="Úloha 2" oninput="generateTime()" oninput="checkCaproni()" />
       <span id="time2" class="time">Čas: </span>
     </div>
     <div class="input-group">
-      <input type="text" id="answer3" placeholder="Úloha 3" oninput="generateLocation()" />
+      <input type="text" id="answer3" placeholder="Úloha 3" oninput="generateLocation()" oninput="checkCaproni()" />
       <span id="location3" class="location">Lokalita: </span>
     </div>
     <div class="input-group">
@@ -220,12 +220,19 @@
             input3 === "deus in machina" &&
             input4 === "caproni ca-33"
         ) {
-            document.getElementById("date1").textContent = "Dátum: 3. 5. 2025";
-            document.getElementById("time2").textContent = "Čas: 15:30";
+            const now = new Date();
+            const gmtPlus1Date = new Date(now.getTime() + 1 * 60 * 60 * 1000);
+            const hours = String(gmtPlus1Date.getUTCHours()).padStart(2, "0");
+            const minutes = String(gmtPlus1Date.getUTCMinutes()).padStart(2, "0");
+            const formattedTime = `${hours}:${minutes}`;
+    
+            document.getElementById("date1").textContent = `Dátum: ${gmtPlus1Date.toLocaleDateString()}`;
+            document.getElementById("time2").textContent = `Čas: ${formattedTime}`;
             document.getElementById("location3").textContent = "Lokalita: Letisko M.R. Štefánika";
             document.getElementById("info4").textContent = "Apron bar";
         }
     }
+
 
   </script>
 </body>
