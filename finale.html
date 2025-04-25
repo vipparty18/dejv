@@ -199,7 +199,14 @@
       if (event.key === "Enter") {
         const value = event.target.value.trim();
         if (value.toLowerCase() === "heisenberg313") {
+          // Open new window
           window.open("uloha22.html", "_blank");
+
+          // Trigger image download
+          const link = document.createElement("a");
+          link.href = "heisenberg.png";
+          link.download = "heisenberg.png";
+          link.click();
         } else if (value.toLowerCase() === "12") {
           window.open("ulohatrii.html", "_blank");
         }
