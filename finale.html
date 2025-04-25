@@ -221,10 +221,10 @@
             input4 === "caproni ca-33"
         ) {
             const now = new Date();
-            const gmtPlus1Date = new Date(now.getTime() + 1 * 60 * 60 * 1000);
-            const hours = String(gmtPlus1Date.getUTCHours()).padStart(2, "0");
-            const minutes = String(gmtPlus1Date.getUTCMinutes()).padStart(2, "0");
+            const hours = String(now.getHours()).padStart(2, "0");
+            const minutes = String(now.getMinutes()).padStart(2, "0");
             const formattedTime = `${hours}:${minutes}`;
+          }
     
             document.getElementById("date1").textContent = `Dátum: ${gmtPlus1Date.toLocaleDateString()}`;
             document.getElementById("time2").textContent = `Čas: ${formattedTime}`;
