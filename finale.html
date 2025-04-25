@@ -213,7 +213,7 @@
         const input2 = document.getElementById("answer2").value.trim();
         const input3 = document.getElementById("answer3").value.trim().toLowerCase();
         const input4 = document.getElementById("answer4").value.trim().toLowerCase();
-    
+        
         if (
             input1 === "heisenberg313" &&
             input2 === "12" &&
@@ -230,7 +230,35 @@
             document.getElementById("time2").textContent = `Čas: ${formattedTime}`;
             document.getElementById("location3").textContent = "Lokalita: Letisko M.R. Štefánika";
             document.getElementById("info4").textContent = "Apron bar";
+        } else {
+            generateRandomDate();
+            generateRandomTime();
+            generateRandomLocation();
         }
+    }
+    
+    function generateRandomDate() {
+        const randomDate = new Date();
+        randomDate.setDate(randomDate.getDate() + Math.floor(Math.random() * 30)); // Random day within the next 30 days
+        const dateString = randomDate.toLocaleDateString();
+        document.getElementById("date1").textContent = `Dátum: ${dateString}`;
+    }
+    
+    function generateRandomTime() {
+        const randomHour = Math.floor(Math.random() * 24);
+        const randomMinute = Math.floor(Math.random() * 60);
+        const timeString = `${randomHour.toString().padStart(2, '0')}:${randomMinute.toString().padStart(2, '0')}`;
+        document.getElementById("time2").textContent = `Čas: ${timeString}`;
+    }
+    
+    function generateRandomLocation() {
+        const locations = [
+            "Bratislava", "Košice", "Prešov", "Nitra", "Trnava",
+            "Žilina", "Trenčín", "Martin", "Poprad", "Banská Bystrica",
+            "Prievidza", "Komárno", "Humenné", "Zvolen", "Levice"
+        ];
+        const randomLocation = locations[Math.floor(Math.random() * locations.length)];
+        document.getElementById("location3").textContent = `Lokalita: ${randomLocation}`;
     }
 
 
