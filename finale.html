@@ -221,7 +221,7 @@
               input1 === "heisenberg313" &&
               input2 === "12" &&
               input3 === "deus in machina" &&
-              input4 === "caproni ca-33"
+              /caproni[\s\-]?ca[\s\-]?33/i.test(input4)
           ) {
               const now = new Date();
               const hours = String(now.getHours()).padStart(2, "0");
