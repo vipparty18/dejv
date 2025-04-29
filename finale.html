@@ -194,20 +194,22 @@
     });
 
     document.getElementById("redirectInput").addEventListener("keydown", function(event) {
-      if (event.key === "Enter") {
-        event.preventDefault(); // Zabraň predvolenému správaniu
-        const value = event.target.value.trim();
-        if (value.toLowerCase() === "heisenberg313") {
-          window.open("uloha22.html", "_blank");
-          const link = document.createElement("a");
-          link.href = "heisenberg.png";
-          link.download = "heisenberg.png";
-          link.click();
-        } else if (value.toLowerCase() === "12") {
-          window.open("ulohatrii.html", "_blank");
+        if (event.key === "Enter") {
+            event.preventDefault(); // Zabráň preskočeniu na ďalší riadok
+            const value = event.target.value.trim();
+    
+            if (value.toLowerCase() === "heisenberg313") {
+                window.open("uloha22.html", "_blank");
+                const link = document.createElement("a");
+                link.href = "heisenberg.png";
+                link.download = "heisenberg.png";
+                link.click();
+            } else if (value.toLowerCase() === "12") {
+                window.open("ulohatrii.html", "_blank");
+            }
         }
-      }
     });
+
 
     function checkCaproni() {
           const input1 = document.getElementById("answer1").value.trim().toLowerCase();
